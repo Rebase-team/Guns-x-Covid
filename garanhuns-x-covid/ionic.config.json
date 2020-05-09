@@ -1,5 +1,7 @@
 {
   "name": "Garanhuns x Covid",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

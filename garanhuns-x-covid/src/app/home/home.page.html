@@ -8,6 +8,20 @@
   </ion-header>
   
   <ion-content>
-    <ion-label>Página principal</ion-label>
+    <ion-label>Qual o nível de movimentação/aglomeração agora no centro?</ion-label>
+    <ion-segment [disabled]="disabledAnswer" (ionChange)="btnAnswerQuestion()" mode="ios">
+      <ion-segment-button value=1>
+        <ion-label color="danger">Muita alta</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value=2>
+        <ion-label color="warning">Alta</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value=3>
+        <ion-label color="primary">Normal</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value=4>
+        <ion-label color="secondary">Baixa</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-content>
 </ion-app>
