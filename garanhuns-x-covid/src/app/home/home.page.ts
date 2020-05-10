@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 const geolib = require('geolib');
 
 @Component({
@@ -15,25 +16,25 @@ export class HomePage implements OnInit{
 
   constructor(private storage: Storage,
               private alert: AlertController,
-              private http: HttpClient) {
+              private geolocation: Geolocation) {
   }
 
   ngOnInit(){
+    
   }
 
   isGaranhuns(){
-    let result: boolean;
-    this.http.get("https://api.ipify.org?format=json").subscribe((ip) => {
-      this.http.get("http://ip-api.com/json/" + Object(ip).ip).subscribe((ipInfo) => {
-        let isInCity = geolib.isPointWithinRadius(
-          { latitude: -8.9365336, longitude: -36.6418746}, //Centro de Garanhuns
-          { latitude: Object(ipInfo).lat, longitude: Object(ipInfo).lon }, //Coordenadas do usuário
-          7000 //7 km
-        );
-        result = isInCity;
-      });
-    });
-    return result;
+    let isInCity: boolean;
+    this.geolocation.getCurrentPosition().then((resp) => {
+      isInCity = geolib.isPointWithinRadius(
+        { latitude: -8.9365336, longitude: -36.6418746}, //Centro de Garanhuns
+        { latitude: resp.coords.latitude, longitude: resp.coords.longitude }, //Coordenadas do usuário
+        7000 //7 km
+      );
+     }).catch((error) => {
+       console.log('Erro na localização', error);
+     });
+    return isInCity;
   }
 
   btnAnswerQuestion() {
