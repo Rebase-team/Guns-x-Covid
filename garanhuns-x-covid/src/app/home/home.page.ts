@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -12,10 +12,21 @@ export class HomePage implements OnInit{
   disabledAnswer: boolean = false;
 
   constructor(private storage: Storage,
-              private alert: AlertController) {
+              private alert: AlertController,
+              private http: HttpClient) {
   }
 
   ngOnInit(){
+    this.isGaranhuns();
+  }
+
+  isGaranhuns(){
+    this.http.get("https://api.ipify.org?format=json").subscribe((ip) => {
+      console.log(Object(ip).ip);
+      this.http.get("http://ip-api.com/json/" + Object(ip).ip).subscribe((ipInfo) => {
+        console.log(Object(ipInfo).city);
+      });
+    });
   }
 
   btnAnswerQuestion(){
