@@ -37,8 +37,8 @@ export class HomePage implements OnInit{
   }
 
   btnAnswerQuestion() {
+    this.disabledAnswer = true;
     if (this.isGaranhuns() == true){
-      this.disabledAnswer = true;
       this.storage.get("allowedTimeToRespond").then((allowedTime) => {
         if (this.date.getDay() == 0) {
           this.alertInfo("Domingo", "O App só funciona de segunda à sábado.", "Entendi");
