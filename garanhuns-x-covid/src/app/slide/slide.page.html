@@ -15,14 +15,15 @@
         <p>
           Informe como está o movimento no centro e veja os horários de pico
           no dia. Assim, você contribuirá com o combate ao Covid-19, fazendo com
-          que você e a comunidade vá ao centro em horários distribuídos.
+          que a comunidade vá ao centro em horários distribuídos.
         </p>
       </ion-slide>
       <ion-slide>
         <ion-img src="../../assets/img/slide3.png"></ion-img>
         <h2><b>Fique atento aos horários!</b></h2>
-        <p>Clique em <b>Finalizado</b> para começar!</p>
-        <ion-button [routerLink]="'/tabs'" mode=ios>Finalizado</ion-button>
+        <p><ion-toggle [(ngModel)]="terms"></ion-toggle>Aceito os termos de uso e privacidade</p>
+        <p>Aceite os termos de uso e clique em <b>Finalizado</b> para começar!</p>
+        <ion-button (click)="btnGoHome()" mode=ios>Finalizado</ion-button>
       </ion-slide>
     </ion-slides>
   </ion-content>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Storage } from "@ionic/storage";
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.page.html',
@@ -8,13 +9,12 @@ import { Storage } from "@ionic/storage";
 })
 export class WelcomePage implements OnInit {
 
-  constructor(private localStorage: Storage,
-              private navigation: NavController) { }
+  constructor(private navigation: NavController,
+    private storage: Storage) { }
 
   ngOnInit() {
-    this.localStorage.get("firstAccess").then((value) => {
+    this.storage.get("firstAccess").then((value) => {
       if (value == null || value == undefined){
-        this.localStorage.set("firstAccess", false);
         this.navigation.navigateRoot("slide");
       }
     });

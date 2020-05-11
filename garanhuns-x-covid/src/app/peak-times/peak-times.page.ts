@@ -57,6 +57,7 @@ export class PeakTimes {
       time: "16:00 às 18:00",
       level: "Alto"
     }];
+  
   constructor() {}
 
 }
