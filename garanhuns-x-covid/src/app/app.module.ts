@@ -11,13 +11,14 @@ import { AppComponent } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-
+import { Device } from "@ionic-native/device/ngx";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
+    Device,
     Geolocation,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
