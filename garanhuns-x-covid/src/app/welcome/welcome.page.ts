@@ -7,9 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomePage implements OnInit {
 
-  constructor() { }
+  constructor(private device: Device) { }
 
   ngOnInit() {
+    console.log(this.device.uuid);
   }
 
 }
