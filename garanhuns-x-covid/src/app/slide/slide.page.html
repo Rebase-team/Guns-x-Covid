@@ -1,9 +1,61 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>slide</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-app>
+  <ion-content scroll-y="false">
+    <ion-slides pager="true" >
+      <ion-slide>
+        <div>
+          <ion-img src="../../assets/img/slide1.png"></ion-img>
+          <h2><b>Bem Vindo(a)!</b></h2>
+            <p>Esse é o <b>Garanhuns X Coronavírus</b>, engajando a população a contibuir com o bem-estar da cidade.</p>
+            <p class="info"><b>Arraste para o lado</b></p>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <ion-img src="../../assets/img/slide2.png"></ion-img>
+        <h2><b>Vamos evitar aglomerações!</b></h2>
+        <p>
+          lorem ipsum dolor sit amet consectetur adipiscing elit hac facilisis natoque nec pulvinar cursus 
+            lobortis quis viverra potenti interdum praesent per nostra euismod torquent finibus congue varius 
+            aptent non pretium curae iaculis maecenas nulla lacus eget montes rhoncus primis dui
+        </p>
+      </ion-slide>
+      <ion-slide>
+        <ion-img src="../../assets/img/slide3.png"></ion-img>
+        <h2><b>Fique atento aos horários!</b></h2>
+        <p>Clique em <b>Finalizado</b> para ir para o aplicativo!</p>
+        <ion-button [routerLink]="'/home'" mode=ios>Finalizado</ion-button>
+      </ion-slide>
+    </ion-slides>
+  </ion-content>
+</ion-app>
+<style>
+    ion-slides {
+      height: 100%;
+    }
 
-<ion-content>
+    .swiper-slide {
+      display: block;
+    }
 
-</ion-content>
+    .swiper-slide h2 {
+      margin-top: 2.8rem;
+    }
+
+    .swiper-slide img {
+      max-height: 50%;
+      max-width: 80%;
+      margin: 60px 0 40px;
+      pointer-events: none;
+    }
+
+    strong {
+      font-weight: 500;
+      color: rgb(15, 66, 155);
+    }
+
+    p {
+      padding: 0 40px;
+      font-size: 14px;
+      line-height: 1.5;
+
+    }
+  </style>
