@@ -16,5 +16,11 @@
           <ion-select-option *ngFor="let day of listDaysPortuguese" [value]="day.id">{{day.day}}</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-grid>
+        <ion-row *ngFor="let peak of listPeakTimes">
+          <ion-col>{{peak.time}}</ion-col>
+          <ion-col>{{peak.level}}</ion-col>
+        </ion-row>
+      </ion-grid>
   </ion-content>
 </ion-app>

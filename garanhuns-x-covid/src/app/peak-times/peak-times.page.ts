@@ -31,8 +31,32 @@ export class PeakTimes {
     {
       day: "Sábado",
       id: 6,
+    }];
+  listPeakTimes = [
+    {
+      time: "06:00 às 08:00",
+      level: "Alto"
     },
-  ]
+    {
+      time: "08:00 às 10:00",
+      level: "Alto"
+    },
+    {
+      time: "10:00 às 12:00",
+      level: "Alto"
+    },
+    {
+      time: "12:00 às 14:00",
+      level: "Alto"
+    },
+    {
+      time: "14:00 às 16:00",
+      level: "Alto"
+    },
+    {
+      time: "16:00 às 18:00",
+      level: "Alto"
+    }];
   constructor() {}
 
 }
