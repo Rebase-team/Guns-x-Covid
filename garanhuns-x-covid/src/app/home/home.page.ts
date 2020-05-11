@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Device } from "@ionic-native/device/ngx";
 
 const geolib = require('geolib');
 
@@ -16,11 +17,12 @@ export class HomePage implements OnInit{
 
   constructor(private storage: Storage,
               private alert: AlertController,
-              private geolocation: Geolocation) {
+              private geolocation: Geolocation,
+              private device: Device) {
   }
 
   ngOnInit(){
-    
+    console.log(this.device.uuid);
   }
 
   isGaranhuns(){

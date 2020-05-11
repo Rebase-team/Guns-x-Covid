@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Device } from "@ionic-native/device/ngx";
-
+import { NavController } from '@ionic/angular';
+import { Storage } from "@ionic/storage";
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.page.html',
@@ -8,10 +8,16 @@ import { Device } from "@ionic-native/device/ngx";
 })
 export class WelcomePage implements OnInit {
 
-  constructor(private device: Device) { }
+  constructor(private localStorage: Storage,
+              private navigation: NavController) { }
 
   ngOnInit() {
-    console.log(this.device.uuid);
+    this.localStorage.get("firstAccess").then((value) => {
+      if (value == null || value == undefined){
+        this.localStorage.set("firstAccess", false);
+        this.navigation.navigateRoot("slide");
+      }
+    });
   }
 
 }
