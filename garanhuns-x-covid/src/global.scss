@@ -24,3 +24,37 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.margin{    
+    margin-left: 5vw;
+    margin-right: 5vw;   
+}
+
+.top{
+    margin-top: 2vh;
+}
+.center{
+    text-align: center;
+}
+.backgroundHeader{
+    --background: linear-gradient(#2e4d91, #249fe6);
+}
+.placeholderColor{
+    color: rgba(182, 182, 182, 0.877);
+}
+.red{
+    background: rgb(255, 87, 87);
+}
+.yellow{
+    background: rgb(243, 202, 18);
+}
+.blue{
+    background: rgb(46, 105, 153);
+}
+.blue2{
+    background: rgb(86, 179, 255);
+}
+.orange{
+    background: rgb(255, 148, 49);
+}
+
