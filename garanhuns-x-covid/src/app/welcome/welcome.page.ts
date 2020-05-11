@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Device } from "@ionic-native/device/ngx";
 
 @Component({
   selector: 'app-welcome',
