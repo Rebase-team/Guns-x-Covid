@@ -6,7 +6,7 @@
       </ion-title>
     </ion-toolbar>
   </ion-header>  
-  <ion-content>
+  <ion-content color="light">
     {{uuid}}
     <div class="marginInfo top">
       <p class="align font"><strong>Qual o nível de aglomeração agora no centro?</strong></p>
@@ -15,16 +15,16 @@
     <div class="margin top">
     <ion-segment [disabled]="disabledAnswer" (ionChange)="btnAnswerQuestion()" mode="ios">
       <ion-segment-button class="red" value=1>
-        <ion-label color="dark">Muita alta</ion-label>
+        <ion-label color="light">Muita alta</ion-label>
       </ion-segment-button>
       <ion-segment-button class="yellow" value=2>
-        <ion-label color="dark">Alta</ion-label>
+        <ion-label color="light">Alta</ion-label>
       </ion-segment-button>
       <ion-segment-button class="blue" value=3>
-        <ion-label color="dark">Normal</ion-label>
+        <ion-label color="light">Normal</ion-label>
       </ion-segment-button>
       <ion-segment-button class="blue2" value=4>
-        <ion-label color="dark">Baixa</ion-label>
+        <ion-label color="light">Baixa</ion-label>
       </ion-segment-button>
     </ion-segment>
       <div class="border top">
