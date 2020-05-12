@@ -22,7 +22,7 @@
         <ion-img src="../../assets/img/slide3.png"></ion-img>
         <h2><b>Fique atento aos horários!</b></h2>
         <ion-item class="margin border" color="none" lines="none">
-          <p class="fontInfo">Aceito os termos de uso e privacidade</p>
+          <p class="fontInfo use-terms" [routerLink]="'/use-terms'">Aceito os termos de uso e privacidade</p>
           <ion-toggle [(ngModel)]="terms" slot="start" color="secondary" checked></ion-toggle>
         </ion-item>
         <p>Aceite os termos de uso e clique em <b>Finalizado</b> para começar!</p>

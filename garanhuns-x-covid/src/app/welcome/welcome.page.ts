@@ -10,7 +10,7 @@ import { Storage } from '@ionic/storage';
 export class WelcomePage implements OnInit {
 
   constructor(private navigation: NavController,
-    private storage: Storage) { }
+              private storage: Storage) { }
 
   ngOnInit() {
     this.storage.get("firstAccess").then((value) => {
