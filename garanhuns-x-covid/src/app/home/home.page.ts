@@ -14,6 +14,7 @@ const geolib = require('geolib');
 export class HomePage implements OnInit{
   date: Date = new Date();
   disabledAnswer: boolean = false;
+  uuid = this.device.uuid;
 
   constructor(private storage: Storage,
               private alert: AlertController,
@@ -22,7 +23,6 @@ export class HomePage implements OnInit{
   }
 
   ngOnInit(){
-    console.log(this.device.uuid);
   }
 
   isGaranhuns(){

@@ -20,7 +20,7 @@ export class SlidePage implements OnInit {
   async btnGoHome(){
   	if (this.terms == true){
   		this.storage.set("firstAccess", false);
-  		this.navigation.navigateForward("tabs");
+  		this.navigation.navigateRoot("tabs");
   	}else{
   		this.storage.remove("firstAccess");
   		const alert = await this.alert.create({
