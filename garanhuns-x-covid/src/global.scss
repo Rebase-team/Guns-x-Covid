@@ -29,8 +29,20 @@
     margin-left: 5vw;
     margin-right: 5vw;   
 }
+.font{
+    font-family: 'Segoe UI', sans-serif;
+}
 .top{
     margin-top: 2vh;
+}
+.bottom{
+    margin-bottom: 2vh;
+}
+.left{
+    text-align: left;
+}
+.right{
+    text-align: right;
 }
 .center{
     text-align: center;
@@ -41,8 +53,14 @@
 .backgroundHeader{
     --background: linear-gradient(#2e4d91, #249fe6);
 }
+.background{
+    --background: #f4f5f8;
+}
 .placeholderColor{
     color: rgba(182, 182, 182, 0.877);
+}
+.light{
+    color: #f4f5f8;
 }
 .red{
     background: rgb(255, 87, 87);
