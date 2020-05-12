@@ -20,4 +20,7 @@ export class WelcomePage implements OnInit {
     });
   }
 
+  btnGoHome(){
+    this.navigation.navigateRoot("tabs");
+  }
 }

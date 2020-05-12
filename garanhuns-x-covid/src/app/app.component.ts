@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
@@ -16,16 +16,39 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private router: Router,
+    private alert: AlertController
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.logicCloseApp();
       this.statusBar.styleDefault();
       this.statusBar.styleBlackTranslucent();
       this.router.navigateByUrl('welcome');
       this.splashScreen.hide();
+    });
+  }
+
+  logicCloseApp(){
+    this.platform.backButton.subscribeWithPriority(-1, async() => {
+      const alert = await this.alert.create({
+        header: "Sair do App",
+        message: "Você deseja sair do App?",
+        buttons: [
+          {
+            text:"Agora não"
+          },
+          {
+            text: "Sim",
+            handler: (() => {
+              navigator['app'].exitApp();
+            })
+          }
+        ]
+      });
+      alert.present();
     });
   }
 }
