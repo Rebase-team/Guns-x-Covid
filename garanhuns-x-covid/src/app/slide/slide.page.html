@@ -1,6 +1,6 @@
 <ion-app>
   <ion-content scroll-y="false">
-    <ion-slides pager="true" >
+    <ion-slides scrollbar="true">
       <ion-slide>
         <div>
           <ion-img src="../../assets/img/slide1.png"></ion-img>
@@ -21,7 +21,10 @@
       <ion-slide>
         <ion-img src="../../assets/img/slide3.png"></ion-img>
         <h2><b>Fique atento aos horários!</b></h2>
-        <p><ion-toggle [(ngModel)]="terms"></ion-toggle>Aceito os termos de uso e privacidade</p>
+        <ion-item class="margin border" color="none" lines="none">
+          <p class="fontInfo">Aceito os termos de uso e privacidade</p>
+          <ion-toggle [(ngModel)]="terms" slot="start" color="secondary" checked></ion-toggle>
+        </ion-item>
         <p>Aceite os termos de uso e clique em <b>Finalizado</b> para começar!</p>
         <ion-button (click)="btnGoHome()" mode=ios>Finalizado</ion-button>
       </ion-slide>
@@ -38,7 +41,7 @@
     }
 
     .swiper-slide h2 {
-      margin-top: 2.8rem;
+      margin-top: -2rem;
     }
 
     .swiper-slide img {

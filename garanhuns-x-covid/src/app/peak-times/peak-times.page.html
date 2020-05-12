@@ -1,10 +1,14 @@
 <ion-app>
   <ion-header>
-    <ion-toolbar>
-      <ion-title>
-        Garanhuns contra Covid
+    <ion-toolbar class="backgroundHeader">
+      <ion-title color="light" class="center title">
+        Garanhuns X Covid-19
       </ion-title>
-        <ion-button [routerLink]="'/about'" slot="end"><ion-icon name="help"></ion-icon></ion-button>
+      <ion-buttons slot="end" [routerLink]="'/about'">
+        <ion-button>
+          <ion-icon class="iconHelp" color="light" name="help"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   
