@@ -9,7 +9,7 @@
   <ion-content>
     {{uuid}}
     <div class="marginInfo top">
-      <p class="align"><strong>Qual o nível de aglomeração agora no centro?</strong></p>
+      <p class="align font"><strong>Qual o nível de aglomeração agora no centro?</strong></p>
       <p class="center placeholderColor">Escolha um dos níveis abaixo</p> 
     </div>    
     <div class="margin top">
@@ -28,21 +28,43 @@
       </ion-segment-button>
     </ion-segment>
       <div class="border top">
-        <ion-grid>
+        <ion-grid class="font">
           <ion-row>
-            <ion-label>
-              <strong>Movimento atual:</strong> Alto
-            </ion-label>
+            <ion-col class="center">
+              <ion-label >
+                <strong>Picos de movimentação</strong>
+              </ion-label>
+            </ion-col>            
           </ion-row>
           <ion-row>
-            <ion-label>
-              <strong>Maior movimento:</strong> 8:00 às 10:00
-            </ion-label>            
+            <ion-col>
+              <ion-label>
+                <strong>Atual:</strong>
+              </ion-label>
+            </ion-col>
+            <ion-col class="right" size="6">
+              Alto
+            </ion-col>
           </ion-row>
           <ion-row>
-            <ion-label>
-              <strong>Menor movimento:</strong> 12:00 às 14:00
-            </ion-label>            
+            <ion-col>
+              <ion-label>
+                <strong>Maior:</strong>
+              </ion-label>
+            </ion-col>
+            <ion-col class="right" size="6">
+              8:00 às 10:00
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <strong>Menor:</strong>
+              </ion-label>
+            </ion-col>
+            <ion-col class="right" size="6">
+              12:00 às 14:00
+            </ion-col>
           </ion-row>
         </ion-grid>
       </div>
