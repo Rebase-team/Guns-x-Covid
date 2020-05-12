@@ -25,8 +25,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.logicCloseApp();
       this.statusBar.styleDefault();
-      //this.statusBar.styleBlackTranslucent();
-      this.statusBar.backgroundColorByHexString('#2e4d91');
+      this.statusBar.backgroundColorByHexString('#f4f5f8');
       this.router.navigateByUrl('welcome');
       this.splashScreen.hide();
     });
