@@ -5,7 +5,7 @@
       <p class="center placeholderColor">Escolha um dos níveis abaixo</p> 
     </div>    
     <div class="margin top">
-    <ion-segment [disabled]="disabledAnswer" (ionChange)="btnAnswerQuestion()" mode="ios">
+    <ion-segment [disabled]="disabledAnswer" (ionChange)="checkGPSPermission()" mode="ios">
       <ion-segment-button class="red" value=1>
         <ion-label color="light">Muita alta</ion-label>
       </ion-segment-button>

@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Device } from "@ionic-native/device/ngx";
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +22,8 @@ import { Device } from "@ionic-native/device/ngx";
   providers: [
     StatusBar,
     Device,
+    AndroidPermissions,
+    LocationAccuracy,
     Geolocation,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
