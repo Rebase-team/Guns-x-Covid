@@ -1,5 +1,23 @@
 <ion-app> 
-  <ion-content color="light">
-    <ion-img class="img" src="../../assets/img/fundo.JPG"></ion-img>
+  <ion-content class="itemColor" >
+    <ion-img src="../../assets/img/fundo.JPG"></ion-img>
+    <ion-item [routerLink]="'/use-terms'" color="light">
+      <ion-icon color="primary" slot="start" name="file-tray-full-outline"></ion-icon>
+      <ion-label class="marginText">Termos de uso</ion-label>
+    </ion-item>
+    <ion-item color="light">
+      <ion-icon color="primary" slot="start" name="mail-outline"></ion-icon>
+      <ion-label class="marginText">teamrebase@gmail.com</ion-label>
+    </ion-item>
+    <ion-item color="light">
+      <ion-icon color="primary" slot="start" name="logo-instagram"></ion-icon>
+      <ion-label class="marginText">@teamrebase</ion-label>
+    </ion-item>
+    <ion-item color="light" lines="none"></ion-item>
+    <div>
+      <p class="marginText2" color="light">Desenvolvido por:</p>
+      <ion-img class="logo" src="../../assets/img/teste.PNG"></ion-img>
+      <p class="marginText2" color="light">Versão 0.0.1</p>
+    </div>
   </ion-content>
 </ion-app>
