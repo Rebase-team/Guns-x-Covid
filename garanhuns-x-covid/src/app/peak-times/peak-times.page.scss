@@ -1,8 +1,33 @@
 .iconHelp{
-	margin-bottom: 3px;
-	font-size: 1.5rem;
+	font-size: 1.2rem;
+	border-style: solid;
+	border-radius: 40rem;
 }
 .title{
 	margin-left: 13.5vw;
 	font-size: 18px;
+}
+.top2{
+	margin-top: 1vh;
+}
+.border{    
+    border-color:#54bf7a;
+    background-color: #54bf7a;
+    border-style: solid;
+    border-radius: 1.2rem;
+}
+
+.cor{
+	color:#173569;
+	border-color:#173569;
+	border-bottom-style: solid;
+}
+
+.borderLeft{
+	border-color:#245736;
+	border-left-style: solid;
+}
+.borderBottom{
+	border-color:#245736;
+	border-bottom-style: solid;
 }

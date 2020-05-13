@@ -1,47 +1,62 @@
-<ion-app>
-  <ion-header>
-    <ion-toolbar class="backgroundHeader">
-      <ion-title color="light" class="center title">
-        Garanhuns X Covid-19
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>  
-  <ion-content>
+<ion-app> 
+  <ion-content color="light">
     <div class="marginInfo top">
-      <p class="align"><strong>Qual o nível de aglomeração agora no centro?</strong></p>
+      <p class="align font"><strong>Qual o nível de aglomeração agora no centro?</strong></p>
       <p class="center placeholderColor">Escolha um dos níveis abaixo</p> 
     </div>    
     <div class="margin top">
     <ion-segment [disabled]="disabledAnswer" (ionChange)="btnAnswerQuestion()" mode="ios">
       <ion-segment-button class="red" value=1>
-        <ion-label color="dark">Muita alta</ion-label>
+        <ion-label color="light">Muita alta</ion-label>
       </ion-segment-button>
       <ion-segment-button class="yellow" value=2>
-        <ion-label color="dark">Alta</ion-label>
+        <ion-label color="light">Alta</ion-label>
       </ion-segment-button>
       <ion-segment-button class="blue" value=3>
-        <ion-label color="dark">Normal</ion-label>
+        <ion-label color="light">Normal</ion-label>
       </ion-segment-button>
       <ion-segment-button class="blue2" value=4>
-        <ion-label color="dark">Baixa</ion-label>
+        <ion-label color="light">Baixa</ion-label>
       </ion-segment-button>
     </ion-segment>
       <div class="border top">
-        <ion-grid>
+        <ion-grid class="font">
           <ion-row>
-            <ion-label>
-              <strong>Movimento atual:</strong> Alto
-            </ion-label>
+            <ion-col class="center">
+              <ion-label >
+                <strong>Picos de movimentação</strong>
+              </ion-label>
+            </ion-col>            
           </ion-row>
           <ion-row>
-            <ion-label>
-              <strong>Maior movimento:</strong> 8:00 às 10:00
-            </ion-label>            
+            <ion-col>
+              <ion-label>
+                <strong>Atual:</strong>
+              </ion-label>
+            </ion-col>
+            <ion-col class="right" size="6">
+              Alto
+            </ion-col>
           </ion-row>
           <ion-row>
-            <ion-label>
-              <strong>Menor movimento:</strong> 12:00 às 14:00
-            </ion-label>            
+            <ion-col>
+              <ion-label>
+                <strong>Maior:</strong>
+              </ion-label>
+            </ion-col>
+            <ion-col class="right" size="6">
+              8:00 às 10:00
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <strong>Menor:</strong>
+              </ion-label>
+            </ion-col>
+            <ion-col class="right" size="6">
+              12:00 às 14:00
+            </ion-col>
           </ion-row>
         </ion-grid>
       </div>
