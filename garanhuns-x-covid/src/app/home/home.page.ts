@@ -80,25 +80,27 @@ export class HomePage implements OnInit{
     this.disabledAnswer = true;
     this.geolocation.getCurrentPosition({timeout: 3000}).then((response) => {
       let isInCity: boolean = geolib.isPointWithinRadius(
-        { latitude: -8.9365336, longitude: -36.6418746 },
+        { latitude: -8.891052, longitude: -36.494519 },
         { latitude: response.coords.latitude, longitude: response.coords.longitude },
-        7000);
+        5000);
+        
       /*let preciseDistance = geolib.getPreciseDistance(
-          { latitude: -8.9365336, longitude: -36.6418746 },
+          { latitude: -8.891052, longitude: -36.494519 },
           { latitude: response.coords.latitude, longitude: response.coords.longitude },
-      );   ^^^^^^^
-      console.log(preciseDistance);*/ 
+      );  
+      console.log(preciseDistance);*/
       // ^^^^^^
       //Calcula e mostra a distância entre os pontos.
 
       if (isInCity) {
-        this.alertInfo("Obrigado", "Continue interagingo com o App sempre que possível " +
+        this.alertInfo("Obrigado", "Continue interagindo com o App sempre que possível " +
           "para contribuir com o bem-estar da cidade." +
           `<br><strong>Daqui a uma hora você pode informar novamente ` +
           `como anda a movimentação no centro.</strong>`, "Entendi");
       }
       else {
-        this.alertInfo("Longe do centro", "Você precisa está em um raio de 7 km para poder responder.", "Entendi");
+        this.disabledAnswer = false;
+        this.alertInfo("Longe do centro", "Você precisa está em um raio de 5 km para poder responder.", "Entendi");
       }
     }).catch(() => {
       this.disabledAnswer = false;
