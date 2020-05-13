@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Device } from "@ionic-native/device/ngx";
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
