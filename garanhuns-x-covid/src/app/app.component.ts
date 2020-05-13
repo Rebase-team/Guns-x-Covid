@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-root',
@@ -13,16 +14,24 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private navigation: NavController) {
+    private navigation: NavController,
+    private storage: Storage) {
     this.initializeApp();
   }
 
   initializeApp() {
+    this.statusBar.styleDefault();
+    this.statusBar.backgroundColorByHexString('#f4f5f8');
+    this.splashScreen.hide();
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.statusBar.backgroundColorByHexString('#f4f5f8');
-      this.navigation.navigateRoot("welcome");
-      this.splashScreen.hide();
+      this.storage.get("firstAccess").then((value) => {
+        if (value == null || value == undefined) {
+          this.navigation.navigateRoot("slide");
+        } else {
+          this.navigation.navigateRoot("tabs");
+        }
+      });
+
     });
   }
 }
