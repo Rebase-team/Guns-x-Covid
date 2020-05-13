@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Device } from "@ionic-native/device/ngx";
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { Geolocation } from "@ionic-native/geolocation/ngx";
 
 const geolib = require('geolib');
 
@@ -13,19 +15,70 @@ const geolib = require('geolib');
 export class HomePage implements OnInit{
   disabledAnswer: boolean = false;
   uuid = this.device.uuid;
+  locationCoords;
 
   constructor(private alert: AlertController,
-              private geolocation: Geolocation,
-              private device: Device) {
+              private device: Device,
+              private androidPermissions: AndroidPermissions,
+              private locationAccuracy: LocationAccuracy,
+              private geolocation: Geolocation) {
   }
 
   ngOnInit(){
     this.showInfoCrowding();
   }
 
-  btnAnswerQuestion() {
+  //Checar permissão do GPS
+  checkGPSPermission() {
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+      result => {
+        if (result.hasPermission) {
+          this.askToTurnOnGPS();
+        } else {
+          this.requestGPSPermission();
+        }
+      },
+      err => {
+        alert(err);
+      }
+    );
+  }
+
+  //Solicitar permissão do GPS
+  private requestGPSPermission() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if (canRequest) {
+        console.log("4");
+      } else {
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+          .then(
+            () => {
+              this.askToTurnOnGPS();
+            },
+            (error) => {
+              this.alertInfo("Problema com a permissão", "Erro ao solicitar permissão de GPS.", "Entendi");
+            }
+          );
+      }
+    });
+  }
+
+  //Pedir para ativar GPS
+  private askToTurnOnGPS() {
+    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+      () => {
+        this.getLocationCoordinates();
+      },
+      (error) => {
+        this.alertInfo("Problema com a permissão", "Erro ao tentar pegar permissão de GPS.", "Entendi");
+      }
+    );
+  }
+
+  //Pegar localização
+  getLocationCoordinates() {
     this.disabledAnswer = true;
-    this.geolocation.getCurrentPosition({timeout: 2000, enableHighAccuracy: true}).then((response) => {
+    this.geolocation.getCurrentPosition({timeout: 3000}).then((response) => {
       let isInCity: boolean = geolib.isPointWithinRadius(
         { latitude: -8.9365336, longitude: -36.6418746 },
         { latitude: response.coords.latitude, longitude: response.coords.longitude },
