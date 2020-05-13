@@ -15,7 +15,7 @@ const geolib = require('geolib');
 export class HomePage implements OnInit{
   disabledAnswer: boolean = false;
   uuid = this.device.uuid;
-  locationCoords;
+  locationCoords: any;
 
   constructor(private alert: AlertController,
               private device: Device,
@@ -28,7 +28,7 @@ export class HomePage implements OnInit{
     this.showInfoCrowding();
   }
 
-  //Checar permissão do GPS
+  //Checa permissão do GPS
   checkGPSPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
       result => {
@@ -44,7 +44,7 @@ export class HomePage implements OnInit{
     );
   }
 
-  //Solicitar permissão do GPS
+  //Solicita permissão do GPS
   private requestGPSPermission() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       if (canRequest) {
@@ -63,7 +63,7 @@ export class HomePage implements OnInit{
     });
   }
 
-  //Pedir para ativar GPS
+  //Pede para ativar GPS
   private askToTurnOnGPS() {
     this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
       () => {
@@ -75,7 +75,7 @@ export class HomePage implements OnInit{
     );
   }
 
-  //Pegar localização
+  //Pega localização
   getLocationCoordinates() {
     this.disabledAnswer = true;
     this.geolocation.getCurrentPosition({timeout: 3000}).then((response) => {
@@ -108,6 +108,7 @@ export class HomePage implements OnInit{
     });
   }
 
+  //Alerta de status da pergunta
   private async alertInfo(title, message, buttonText) {
     const alert = await this.alert.create({
       header: title,
@@ -121,6 +122,7 @@ export class HomePage implements OnInit{
     alert.present();
   }
 
+  //Alerta sobre a informação do envio da pergunta
   private showInfoCrowding(){
     //Chamar em tempo real função que pega dados sobre 
     //movimentação/aglomeração no dia.
