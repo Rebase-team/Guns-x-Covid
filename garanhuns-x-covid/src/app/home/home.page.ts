@@ -4,6 +4,8 @@ import { Device } from "@ionic-native/device/ngx";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { Subject, NEVER, interval } from 'rxjs';
+import { switchMap, materialize, dematerialize } from 'rxjs/operators';
 
 const geolib = require('geolib');
 
@@ -13,7 +15,9 @@ const geolib = require('geolib');
   styleUrls: ['home.page.scss']
 })
 
-export class HomePage implements OnInit{
+export class HomePage{
+  source = interval(1000);
+  pauser = new Subject();
   disabledAnswer: boolean = false;
   uuid = this.device.uuid;
   locationCoords: any;
@@ -25,8 +29,21 @@ export class HomePage implements OnInit{
               private geolocation: Geolocation) {
   }
 
-  ngOnInit(){
-    this.showInfoCrowding();
+  ionViewWillEnter() {
+    this.pauser
+      .pipe(
+        switchMap(paused => paused ? NEVER : this.source.pipe(materialize())),
+        dematerialize()
+      )
+      .subscribe(() => {
+        this.showInfoCrowding();
+      });
+    this.pauser.next(false);
+  }
+
+  ionViewDidLeave() {
+    //Pausa a função this.showInfoCrowding()
+    this.pauser.next(true);
   }
 
   //Checa permissão do GPS
@@ -109,7 +126,7 @@ export class HomePage implements OnInit{
     });
   }
 
-  //Alerta de status da pergunta
+  //Alerta sobre a informação do envio da pergunta
   private async alertInfo(title, message, buttonText) {
     const alert = await this.alert.create({
       header: title,
@@ -123,8 +140,9 @@ export class HomePage implements OnInit{
     alert.present();
   }
 
-  //Alerta sobre a informação do envio da pergunta
+  //Status do App
   private showInfoCrowding(){
+    console.log("Aqui");
     //Chamar em tempo real função que pega dados sobre 
     //movimentação/aglomeração no dia.
   }
