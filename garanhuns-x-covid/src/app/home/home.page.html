@@ -1,68 +1,71 @@
-<ion-app> 
-  <ion-content color="light">
+<ion-app>
+  <ion-content class="background">
+    <ion-item color="none" lines="none">
+      <ion-icon [routerLink]="'/about'" slot="end" class="iconHelp" color="primary" name="help"></ion-icon>
+    </ion-item>
     <div class="marginInfo top">
-      <p class="align font"><strong>Qual o nível de aglomeração agora no centro?</strong></p>
-      <p class="center placeholderColor">Escolha um dos níveis abaixo</p> 
-    </div>    
+      <p class="align font textBlue" ><strong>Qual o nível de aglomeração agora no centro?</strong></p>
+      <p class="center placeholderColor">Escolha um dos níveis abaixo</p>
+    </div>
     <div class="margin top">
-    <ion-segment [disabled]="disabledAnswer" (ionChange)="checkGPSPermission()" mode="ios">
-      <ion-segment-button class="red" value=1>
-        <ion-label color="light">Muita alta</ion-label>
-      </ion-segment-button>
-      <ion-segment-button class="yellow" value=2>
-        <ion-label color="light">Alta</ion-label>
-      </ion-segment-button>
-      <ion-segment-button class="blue" value=3>
-        <ion-label color="light">Normal</ion-label>
-      </ion-segment-button>
-      <ion-segment-button class="blue2" value=4>
-        <ion-label color="light">Baixa</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+      <ion-segment [disabled]="disabledAnswer" (ionChange)="checkGPSPermission()" mode="ios">
+        <ion-segment-button class="red" value=1>
+          <ion-label class="white"><strong>Muita alta</strong></ion-label>
+        </ion-segment-button>
+        <ion-segment-button class="yellow" value=2>
+          <ion-label class="white"><strong>Alta</strong></ion-label>
+        </ion-segment-button>
+        <ion-segment-button class="blue" value=3>
+          <ion-label class="white"><strong>Normal</strong></ion-label>
+        </ion-segment-button>
+        <ion-segment-button class="green" value=4>
+          <ion-label class="white"><strong>Baixa</strong></ion-label>
+        </ion-segment-button>
+      </ion-segment>
       <div class="border top">
         <ion-grid class="font">
           <ion-row>
             <ion-col class="center borderBottom">
-              <ion-label color="light">
+              <ion-label class="white">
                 <strong>Picos de movimentação</strong>
               </ion-label>
-            </ion-col>            
+            </ion-col>
           </ion-row>
           <ion-row>
             <ion-col class="left">
-              <ion-label color="light">
+              <ion-label class="white">
                 <strong>Atual:</strong>
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft top2" size="6">
-              <ion-label color="light">Alto</ion-label>       
+              <ion-label class="white">Alto</ion-label>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col class="left">
-              <ion-label color="light">
+              <ion-label class="white">
                 <strong>Maior:</strong>
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft top2" size="6">
-              <ion-label color="light">8:00 às 10:00</ion-label>      
+              <ion-label class="white">8:00 às 10:00</ion-label>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col class="left">
-              <ion-label color="light">
+              <ion-label class="white">
                 <strong>Menor:</strong>
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft top2" size="6">
-              <ion-label color="light">12:00 às 14:00</ion-label>             
+              <ion-label class="white">12:00 às 14:00</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
       </div>
-      <ion-note color="danger">O aplicativo precisa de participação do público para gerar 
+      <p class="align textRed">O aplicativo precisa de participação do público para gerar
         informações suficientes.
-      </ion-note>
-  </div> 
+      </p>
+    </div>
   </ion-content>
 </ion-app>

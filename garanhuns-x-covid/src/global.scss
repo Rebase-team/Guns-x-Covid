@@ -50,6 +50,15 @@
 .justify{
     text-align: justify;
 }
+.textRed{
+    color:rgb(255, 87, 87);
+}
+.textBlack{
+    color: #3c915a;
+}
+.textBlue{
+    color:#173569;
+}
 .backgroundHeader{
     --background: linear-gradient(#2e4d91, #249fe6);
 }
@@ -62,6 +71,9 @@
 .light{
     color: #f4f5f8;
 }
+.white{
+    color:white;
+}
 .red{
     background: rgb(255, 87, 87);
 }
@@ -69,11 +81,13 @@
     background: rgb(243, 202, 18);
 }
 .blue{
-    background: rgb(46, 105, 153);
+    background: rgb(86, 179, 255);    
 }
-.blue2{
-    background: rgb(86, 179, 255);
+.green{
+    background: rgb(95, 230, 102);
 }
-.orange{
-    background: rgb(255, 148, 49);
+.iconHelp{
+	font-size: 1.2rem;
+	border-style: solid;
+	border-radius: 40rem;
 }
