@@ -20,10 +20,10 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.statusBar.styleDefault();
-    this.statusBar.backgroundColorByHexString('#f4f5f8');
-    this.splashScreen.hide();
     this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#f4f5f8');
+      this.splashScreen.hide();
       this.storage.get("firstAccess").then((value) => {
         if (value == null || value == undefined) {
           this.navigation.navigateRoot("slide");
