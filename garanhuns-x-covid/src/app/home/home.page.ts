@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { Device } from "@ionic-native/device/ngx";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
@@ -16,12 +16,14 @@ export class HomePage implements OnInit{
   disabledAnswer: boolean = false;
   uuid = this.device.uuid;
   locationCoords: any;
-
+  subscribeBackButton: any;
+  
   constructor(private alert: AlertController,
               private device: Device,
               private androidPermissions: AndroidPermissions,
               private locationAccuracy: LocationAccuracy,
-              private geolocation: Geolocation) {
+              private geolocation: Geolocation,
+              private platform: Platform) {
   }
 
   ngOnInit(){
@@ -126,5 +128,16 @@ export class HomePage implements OnInit{
   private showInfoCrowding(){
     //Chamar em tempo real função que pega dados sobre 
     //movimentação/aglomeração no dia.
+  }
+
+  ionViewWillEnter() {
+    this.subscribeBackButton = this.platform.backButton.subscribeWithPriority(0, () => {
+      navigator["app"].exitApp();
+    });
+  }
+
+  ionViewWillLeave(){
+    this.subscribeBackButton.unsubscribe();
+    this.subscribeBackButton = null;
   }
 }

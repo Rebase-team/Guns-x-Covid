@@ -28,10 +28,9 @@ export class AppComponent {
         if (value == null || value == undefined) {
           this.navigation.navigateRoot("slide");
         } else {
-          this.navigation.navigateRoot("tabs");
+          this.navigation.navigateRoot("");
         }
       });
-
     });
   }
 }
