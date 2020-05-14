@@ -14,12 +14,12 @@
       <ion-grid>
         <ion-row>
           <ion-col class="center borderBottom">
-            <ion-label color="light"><strong>Horários de pico</strong></ion-label>
+            <ion-label color="white"><strong>Horários de pico</strong></ion-label>
           </ion-col>
         </ion-row>
         <ion-row class="top2" *ngFor="let peak of listPeakTimes">
-          <ion-col class="left light">{{peak.time}}</ion-col>
-          <ion-col class="right light borderLeft">{{peak.level}}</ion-col>
+          <ion-col class="left white">{{peak.time}}</ion-col>
+          <ion-col class="right white borderLeft">{{peak.level}}<ion-icon class="levelRed" name="ellipse"></ion-icon></ion-col>
         </ion-row>
       </ion-grid>
     </div>
