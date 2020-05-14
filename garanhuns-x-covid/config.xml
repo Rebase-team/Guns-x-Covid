@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Garanhuns X Covid-19</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <description>Esse é o App Garanhuns X Covid-19, engajando a população a contribuir com o bem-estar da cidade.</description>
+    <author email="teamrebase@gmail.com" href="https://github.com/Rebase-team">Rebase Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -9,6 +9,10 @@ export class PeakTimes {
   currentDay = new Date().getDay();
   listDaysPortuguese = [
     {
+      day: "Domingo",
+      id: 0,
+    },
+    {
       day: "Segunda",
       id: 1,
     },
