@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../peak-times/peak-times.module').then(m => m.PeakTimesPageModule)
       },
       {
+        path: 'covid',
+        loadChildren: () => import('../covid/covid.module').then(m => m.CovidPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'

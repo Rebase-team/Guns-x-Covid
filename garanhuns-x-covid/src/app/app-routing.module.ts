@@ -17,7 +17,11 @@ const routes: Routes = [
   {
     path: 'use-terms',
     loadChildren: () => import('./use-terms/use-terms.module').then( m => m.UseTermsPageModule)
+  },  {
+    path: 'covid',
+    loadChildren: () => import('./covid/covid.module').then( m => m.CovidPageModule)
   }
+
 ];
 @NgModule({
   imports: [
