@@ -1,38 +1,146 @@
 import { Injectable } from '@angular/core';
-import { HTTP } from "@ionic-native/http";
+import { HTTP } from "@ionic-native/http"
+
+const __UNSECURE_DEBUG_MODE = true;
 
 @Injectable({
   providedIn: 'root'
 })
 export class CovidApiService {
-  url = "http://api-covid.fun:14400/covid/";
+  static url = "https://api-covid.fun/covid/";
 
-  constructor(private http: HTTP) { }
-
-  registerUser(event: GunsCovidEvents, uuid){
-    this.http.put(this.url + "uuid/" + uuid, {}, {})
-    .then(event.OnRegisterSuccess).catch(event.OnErrorTriggered)
+  static registerUser(event: GunsCovidEvents, uuid){
+    this.PutHttpRequest(CovidApiService.url + "uuid/" + uuid, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
   }
 
-  submitVote(event: GunsCovidEvents, uuid, vote){
-    this.http.post(this.url + "submit/" + uuid + "/" + vote, {}, {})
-    .then(event.OnSubmiteVote).catch(event.OnErrorTriggered)
+  static submitVote(event: GunsCovidEvents, uuid, vote){
+    this.PostHttpRequest(CovidApiService.url + "submit/" + uuid + "/" + vote, {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
   }
 
-  averageDay(event: GunsCovidEvents, uuid, day){
-    this.http.get(this.url + "average/" + uuid + "/" + day, {}, {})
-    .then(event.OnAverageDay).catch(event.OnErrorTriggered)
+  static averageDay(event: GunsCovidEvents, uuid, day){
+    this.GetHttpRequest(CovidApiService.url + "average/" + uuid + "/" + day, {}, {}, event.OnAverageDay, event.OnErrorTriggered);
   }
 
-  casesTodayGaranhuns(event: GunsCovidEvents, uuid){
-    this.http.get(this.url + "today/" + uuid + "/garanhuns", {}, {})
-    .then(event.OnCasesTodayGaranhuns).catch(event.OnErrorTriggered)
+  static casesTodayGaranhuns(event: GunsCovidEvents, uuid){
+    this.GetHttpRequest(CovidApiService.url + "today/" + uuid + "/garanhuns", {}, {}, event.OnCasesTodayGaranhuns, event.OnErrorTriggered);
   }
 
-  updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking){
-    this.http.put(this.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking, {}, {})
-    .then(event.OnUpdatePosition)
-    .catch(event.OnErrorTriggered)
+  static updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking){
+    this.PutHttpRequest(CovidApiService.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking, {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
+  }
+
+  public static GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+    if (!__UNSECURE_DEBUG_MODE) {
+      new HTTP().get(
+        addr,
+        parameters,
+        headers
+      ).then(data => {
+        successCallback(data);
+      }).catch(error => {
+        errorCallback(error);
+      });
+    }
+    else {
+      let xhr = new XMLHttpRequest();
+      xhr.responseType = "text";
+      xhr.open("GET", addr + "?" + Object.keys(parameters).map(function (key) { return key + "=" + encodeURIComponent(parameters[key]) }).join("&"), true);
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+      xhr.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log("Data incoming:");
+          console.log(this);
+          successCallback({ "data": this.responseText });
+        }
+      }
+      if (typeof headers != "undefined" || headers === null) {
+        for (let prop in headers) {
+          xhr.setRequestHeader(prop, headers[prop]);
+        }
+      }
+      xhr.onerror = errorCallback;
+      xhr.send(null);
+    }
+  }
+
+  public static PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+    if (!__UNSECURE_DEBUG_MODE) {
+      if (typeof headers != "object" || headers === null) {
+        headers = {};
+      }
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      new HTTP().post(
+        addr,
+        parameters,
+        headers
+      ).then(data => {
+        successCallback(data);
+      }).catch(error => {
+        errorCallback(error);
+      });
+    }
+    else {
+      let xhr = new XMLHttpRequest();
+      xhr.responseType = "text";
+      xhr.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log("Data incoming:");
+          console.log(this);
+          successCallback({ "data": this.responseText });
+        }
+      }
+      xhr.open("POST", addr, true);
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+      if (typeof headers != "object" || headers === null) {
+        headers = {};
+      }
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      for (let prop in headers) {
+        xhr.setRequestHeader(prop, headers[prop]);
+      }
+      xhr.onerror = errorCallback;
+      xhr.send(Object.keys(parameters).map(function (key) { return key + "=" + encodeURIComponent(parameters[key]) }).join("&"));
+    }
+  }
+
+  public static PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+    if (!__UNSECURE_DEBUG_MODE) {
+      if (typeof headers != "object" || headers === null) {
+        headers = {};
+      }
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      new HTTP().put(
+        addr,
+        parameters,
+        headers
+      ).then(data => {
+        successCallback(data);
+      }).catch(error => {
+        errorCallback(error);
+      });
+    }
+    else {
+      let xhr = new XMLHttpRequest();
+      xhr.responseType = "text";
+      xhr.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+          console.log("Data incoming:");
+          console.log(this);
+          successCallback({ "data": this.responseText });
+        }
+      }
+      xhr.open("PUT", addr, true);
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+      if (typeof headers != "object" || headers === null) {
+        headers = {};
+      }
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      for (let prop in headers) {
+        xhr.setRequestHeader(prop, headers[prop]);
+      }
+      xhr.onerror = errorCallback;
+      xhr.send(Object.keys(parameters).map(function (key) { return key + "=" + encodeURIComponent(parameters[key]) }).join("&"));
+    }
   }
 }
 
@@ -115,4 +223,5 @@ export const GunsCovidResponses = {
     //LOCALIZAÇÃO DO USER RETORNADA COM SUCESSO
     USER_LOCATION_SUCCESS_RETURNED: 15,
   }
+
 }
