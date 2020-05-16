@@ -14,6 +14,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Device } from "@ionic-native/device/ngx";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { HTTP } from "@ionic-native/http";
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
   imports: [BrowserModule, IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,
+    HTTP,
     Device,
     AndroidPermissions,
     LocationAccuracy,
