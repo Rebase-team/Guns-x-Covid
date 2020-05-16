@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HTTP } from "@ionic-native/http"
+import { HTTP } from "@ionic-native/http/ngx"
 
 const __UNSECURE_DEBUG_MODE = true;
 

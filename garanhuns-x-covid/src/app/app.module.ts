@@ -14,7 +14,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Device } from "@ionic-native/device/ngx";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { HTTP } from "@ionic-native/http";
+import { HTTP } from "@ionic-native/http/ngx";
 
 @NgModule({
   declarations: [AppComponent],
