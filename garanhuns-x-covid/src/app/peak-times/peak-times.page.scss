@@ -25,23 +25,30 @@
 	border-color:#3c915a;
 	border-left-style: solid;
 }
+.borderBottom{
+	border-color:#3c915a;
+	border-bottom-style: solid;
+}
 
 //exemplos de cor nos níveis
 .levelRed{
 	margin-bottom: -0.5vh;
 	margin-left: 1vh;
-	color: rgb(255, 34, 34);
-	//color: rgb(253, 230, 19);
-	//color: rgb(29, 153, 255);
-	//color: rgb(26, 252, 38);
-
-
+	color: rgb(255, 34, 34);		
 }
 .levelYellow{
-	background-color: rgb(243, 202, 18);
+	margin-bottom: -0.5vh;
+	margin-left: 1vh;
+	color: rgb(253, 230, 19);
+}
+.levelBlue{
+	margin-bottom: -0.5vh;
+	margin-left: 1vh;
+	color: rgb(29, 153, 255);
+}
+.levelGreen{
+	margin-bottom: -0.5vh;
+	margin-left: 1vh;
+	color: rgb(26, 252, 38);
 }
 
-.borderBottom{
-	border-color:#3c915a;
-	border-bottom-style: solid;
-}
