@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage';
 import { AlertService } from "src/app/services/alert.service";
 import { Device } from "@ionic-native/device/ngx";
 import { GunsCovidEvents, GunsCovidResponses, CovidApiService } from '../services/covid-api.service';
+import { ReportProblemService } from '../services/report-problem.service';
 
 @Component({
 	selector: 'app-slide',
@@ -19,7 +20,8 @@ export class SlidePage {
 		private storage: Storage,
 		private device: Device,
 		private alert: AlertService,
-		private covidApi: CovidApiService) { }
+		private covidApi: CovidApiService,
+		private report: ReportProblemService) { }
 
 	async btnGoHome() {
 		if (this.terms == true) {
@@ -30,9 +32,6 @@ export class SlidePage {
 	}
 
 	registerUser() {
-		if (this.uuid == null || this.uuid == undefined){
-			this.uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-		}
 		this.spinner = true;
 		let event = new GunsCovidEvents();
 		event.OnRegisterSuccess = (data) => {
@@ -51,12 +50,15 @@ export class SlidePage {
 					this.navigation.navigateRoot("tabs");
 					break;
 				case GunsCovidResponses.REGISTER_USER.UUID_FAILED:
+					this.report.reportProblem("Cadastro: falha ao cadastrar UUID.");
 					this.alert.activeAlert("Falha ao cadastrar o dispositivo", "Verifique sua conexão com à internet.");
 					break;
 				case GunsCovidResponses.REGISTER_USER.UUID_INVALID:
+					this.report.reportProblem("Cadastro: UUID inválido.");
 					this.alert.activeAlert("Tente novamente o acesso.", "Identificação inválida.");
 					break;
 				default:
+					this.report.reportProblem("Cadastro:erro inesperado.");
 					this.alert.activeAlert("Tente novamente o acesso.", "Algo inesperado ocorreu.");
 			}
 		}

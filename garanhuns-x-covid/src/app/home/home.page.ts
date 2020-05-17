@@ -8,6 +8,7 @@ import { GunsCovidEvents, CovidApiService, GunsCovidResponses } from '../service
 import { InfoCrowdingService } from '../services/info-crowding.service';
 import { Storage } from "@ionic/storage";
 import { AlertService } from '../services/alert.service';
+import { ReportProblemService } from '../services/report-problem.service';
 
 const geolib = require('geolib');
 
@@ -38,7 +39,8 @@ export class HomePage{
               private geolocation: Geolocation,
               private covidApi: CovidApiService,
               private storage: Storage,
-              private infoCrowding: InfoCrowdingService) {
+              private infoCrowding: InfoCrowdingService,
+              private report: ReportProblemService) {
   }
 
   ionViewWillEnter() {
@@ -84,13 +86,13 @@ export class HomePage{
           }
           break;
         case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_FAILED:
-          console.log("UUID falhou.");
+          this.report.reportProblem("Aglom. diária em Guns: Falha no UUID.");
           break;
         case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_INVALID:
-          console.log("UUID inválido.");
+          this.report.reportProblem("Aglom. diária em Guns: UUID inválido.");
           break;
         default:
-          console.log("Algo inesperado ocorreu");
+          this.report.reportProblem("Aglom. diária em Guns: erro inesperado.");
       }
     }
     event.OnErrorTriggered = (error) => {
@@ -154,7 +156,7 @@ export class HomePage{
       let isInCity: boolean = geolib.isPointWithinRadius(
         { latitude: -8.891052, longitude: -36.494519 },
         { latitude: response.coords.latitude, longitude: response.coords.longitude },
-        5000);
+        50000);
         
       /*let preciseDistance = geolib.getPreciseDistance(
           { latitude: -8.891052, longitude: -36.494519 },
@@ -189,26 +191,28 @@ export class HomePage{
           `como anda a movimentação no centro.</strong>`);
           break;
         case GunsCovidResponses.SUBMIT_VOTE.ERROR_WHEN_VOTING:
+          this.report.reportProblem("Enviar voto: erro ao tentar votar.");
           this.alert.activeAlert("Erro ao responder", "Tente responder novamente.");
           break;
         case GunsCovidResponses.SUBMIT_VOTE.TOO_MANY_VOTES:
+          this.report.reportProblem("Enviar voto: não pode votar ainda.");
           this.alert.activeAlert("Você já respondeu", "Daqui uma hora a partir da última vez que você respondeu você pode responder novamente.");
           break;
         case GunsCovidResponses.SUBMIT_VOTE.UUID_FAILED:
           this.disabledAnswer = false;
-          console.log("UUID falhou.");
+          this.report.reportProblem("Enviar voto: falha no UUID.");
           break;
         case GunsCovidResponses.SUBMIT_VOTE.UUID_INVALID:
           this.disabledAnswer = false;
-          console.log("UUID inválido.");
+          this.report.reportProblem("Enviar voto: UUID inválido.");
           break;
         case GunsCovidResponses.SUBMIT_VOTE.VOTE_INVALID:
           this.disabledAnswer = false;
-          console.log("Voto inválido.");
+          this.report.reportProblem("Enviar voto: voto inválido.");
           break;
         default:
           this.disabledAnswer = false;
-          console.log("Erro inesperado.");
+          this.report.reportProblem("Enviar voto: erro inesperado.");
       }
     }
     event.OnErrorTriggered = (error) => {
