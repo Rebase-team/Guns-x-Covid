@@ -28,6 +28,7 @@ export class HomePage{
     min: "~",
     max: "~"
   };
+  coords: any = {};
   source: any = interval(5000);
   pauser = new Subject();
   disabledAnswer: boolean = false;
@@ -155,6 +156,7 @@ export class HomePage{
   //Pega localização
   private getLocationCoordinates() {
     this.geolocation.getCurrentPosition({timeout: 3000}).then((response) => {
+      this.coords = { latitude: response.coords.latitude, longitude: response.coords.longitude };
       let isInCity: boolean = geolib.isPointWithinRadius(
         { latitude: -8.891052, longitude: -36.494519 },
         { latitude: response.coords.latitude, longitude: response.coords.longitude },
@@ -233,10 +235,13 @@ export class HomePage{
       let dataJSON = JSON.parse(data.data);
       switch(dataJSON.response){
         case GunsCovidResponses.UPDATE_POSITION.USER_LOCATION_SUCCESS_RETURNED:
+          //Sucesso
           break;
         case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
+          this.report.reportProblem("Enviar localiz.: erro ao retornar local. do usuário.");
           break;
         case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
+          this.report.reportProblem("Enviar localiz.: erro ao atualizar local. do usuário.");
           break;
         case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
           this.report.reportProblem("Enviar localiz.: falha no UUID.");
@@ -244,11 +249,16 @@ export class HomePage{
         case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
           this.report.reportProblem("Enviar localiz.: UUID inválido.");
           break;
+        default:
+          this.report.reportProblem("Enviar localiz.: erro inesperado.");
       }
     }
     event.OnErrorTriggered = (error) => {
       this.report.reportProblem("Enviar localiz.: ERROR.");
       console.log(error);
     }
+    this.storage.get("uuid").then((uuid) => {
+      this.covidApi.updatePosition(event, uuid, this.coords.latitude, this.coords.longitude, true);
+    });
   }
 }
