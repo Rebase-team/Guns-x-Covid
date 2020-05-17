@@ -6,7 +6,7 @@
     <ion-item class="margin top cor" color="none" lines="none">
       <ion-icon color="primary" slot="start" name="calendar"></ion-icon>
       <ion-label color="primary" position="floating">Selecione o dia</ion-label>
-      <ion-select [value]="currentDay">
+      <ion-select (ionChange)="btnAverageDay()" [(ngModel)]="currentDay" [value]="currentDay">
         <ion-select-option *ngFor="let day of listDaysPortuguese" [value]="day.id">{{day.day}}</ion-select-option>
       </ion-select>
     </ion-item>
@@ -19,7 +19,7 @@
         </ion-row>
         <ion-row class="top2" *ngFor="let peak of listPeakTimes">
           <ion-col class="left white">{{peak.time}}</ion-col>
-          <ion-col class="right white borderLeft">{{peak.level}}<ion-icon class="levelRed" name="ellipse"></ion-icon></ion-col>
+          <ion-col class="right white borderLeft">{{peak.crowding.msg}}<ion-icon [class]="peak.crowding.color" name="ellipse"></ion-icon></ion-col>
         </ion-row>
       </ion-grid>
     </div>

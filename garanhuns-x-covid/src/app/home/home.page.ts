@@ -52,6 +52,7 @@ export class HomePage{
       )
       .subscribe(() => {
         this.showCasesTodayGuns();
+        setTimeout(this.sendLocation, 20000);
       });
     this.pauser.next(false);
   }
@@ -96,6 +97,7 @@ export class HomePage{
       }
     }
     event.OnErrorTriggered = (error) => {
+      this.report.reportProblem("Aglom. diária em Guns: ERROR.");
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
@@ -216,11 +218,37 @@ export class HomePage{
       }
     }
     event.OnErrorTriggered = (error) => {
+      this.report.reportProblem("Enviar voto: ERROR.");
       this.disabledAnswer = false;
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
       this.covidApi.submitVote(event, uuid, this.vote);
     })
+  }
+
+  private sendLocation(){
+    let event = new GunsCovidEvents();
+    event.OnUpdatePosition = data => {
+      let dataJSON = JSON.parse(data.data);
+      switch(dataJSON.response){
+        case GunsCovidResponses.UPDATE_POSITION.USER_LOCATION_SUCCESS_RETURNED:
+          break;
+        case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
+          break;
+        case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
+          break;
+        case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
+          this.report.reportProblem("Enviar localiz.: falha no UUID.");
+          break;
+        case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
+          this.report.reportProblem("Enviar localiz.: UUID inválido.");
+          break;
+      }
+    }
+    event.OnErrorTriggered = (error) => {
+      this.report.reportProblem("Enviar localiz.: ERROR.");
+      console.log(error);
+    }
   }
 }

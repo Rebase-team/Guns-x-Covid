@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { CovidApiService, GunsCovidEvents, GunsCovidResponses } from '../services/covid-api.service';
+import { Storage } from "@ionic/storage";
+import { ReportProblemService } from '../services/report-problem.service';
+import { InfoCrowdingService } from '../services/info-crowding.service';
 
 @Component({
   selector: 'app-peak-times',
@@ -36,32 +40,90 @@ export class PeakTimes {
       day: "Sábado",
       id: 6,
     }];
+
   listPeakTimes = [
     {
       time: "06:00 às 08:00",
-      level: "Alto"
+      crowding: {
+        msg: "~",
+        color: "dark"}
     },
     {
       time: "08:00 às 10:00",
-      level: "Alto"
+      crowding: {
+        msg: "~",
+        color: "dark"}
     },
     {
       time: "10:00 às 12:00",
-      level: "Alto"
+      crowding: {
+        msg: "~",
+        color: "dark"}
     },
     {
       time: "12:00 às 14:00",
-      level: "Alto"
+      crowding: {
+        msg: "~",
+        color: "dark"}
     },
     {
       time: "14:00 às 16:00",
-      level: "Alto"
+      crowding: {
+        msg: "~",
+        color: "dark"}
     },
     {
       time: "16:00 às 18:00",
-      level: "Alto"
+      crowding: {
+        msg: "~",
+        color: "dark"}
     }];
   
-  constructor() {}
+  constructor(private covidApi: CovidApiService,
+              private storage: Storage,
+              private report: ReportProblemService,
+              private infoCrowding: InfoCrowdingService) { }
 
+  ionViewWillEnter() {
+    this.btnAverageDay();
+  }
+
+  btnAverageDay() {
+    let event = new GunsCovidEvents();
+    event.OnAverageDay = (data) => {
+      let dataJSON = JSON.parse(data.data);
+      switch (dataJSON.response) {
+        case GunsCovidResponses.AVERAGE_DAY.AVERAGE_SUBMITED_SUCCESS:
+          let y = 0;
+          for (let x = 0; x < dataJSON.parameters.length; x++) {
+            if (Number(dataJSON.parameters[x].Start.substring(0, 2)) >= 6 &&
+              Number(dataJSON.parameters[x].End.substring(0, 2)) <= 18) {
+              this.listPeakTimes[y] = {
+                time: dataJSON.parameters[x].Start + " às " + dataJSON.parameters[x].End,
+                crowding: {
+                  msg: this.infoCrowding.msgStatusCrowding(dataJSON.parameters[x].Measure),
+                  color: this.infoCrowding.colorStatusCrowding(dataJSON.parameters[x].Measure)}
+              };
+              y += 1;
+            }
+          }
+          break;
+        case GunsCovidResponses.AVERAGE_DAY.UUID_FAILED:
+          this.report.reportProblem("Média diária: falha no UUID.");
+          break;
+        case GunsCovidResponses.AVERAGE_DAY.UUID_INVALID:
+          this.report.reportProblem("Média diária: UUID inválido.");
+          break;
+        default:
+          this.report.reportProblem("Média diária: errro inesperado.");
+      }
+    }
+    event.OnErrorTriggered = (error) => {
+      this.report.reportProblem("Média diária: ERROR.");
+      console.log(error);
+    }
+    this.storage.get("uuid").then((uuid) => {
+      this.covidApi.averageDay(event, uuid, this.currentDay);
+    })
+  }
 }

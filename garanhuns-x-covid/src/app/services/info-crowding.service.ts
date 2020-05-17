@@ -31,12 +31,13 @@ export class InfoCrowdingService {
     }
     return{
       0: "dark",
-      1.5: "success", 
-      2: "primary",
-      2.5: "secondary",
-      3: "warning", 
-      3.5: "orange",
-      4: "danger"
+      1.0: "levelGreen",
+      1.5: "levelGreen", 
+      2: "levelBlue",
+      2.5: "levelBlue",
+      3: "levelYellow", 
+      3.5: "levelYellow",
+      4: "levelRed"
     }[value]
   }
 }
