@@ -7,29 +7,29 @@ const __UNSECURE_DEBUG_MODE = true;
   providedIn: 'root'
 })
 export class CovidApiService {
-  static url = "https://api-covid.fun/covid/";
+  url = "https://api-covid.fun/covid/";
 
-  static registerUser(event: GunsCovidEvents, uuid){
-    this.PutHttpRequest(CovidApiService.url + "uuid/" + uuid, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
+  registerUser(event: GunsCovidEvents, uuid) {
+    this.PutHttpRequest(this.url + "uuid/" + uuid, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
   }
 
-  static submitVote(event: GunsCovidEvents, uuid, vote){
-    this.PostHttpRequest(CovidApiService.url + "submit/" + uuid + "/" + vote, {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
+  submitVote(event: GunsCovidEvents, uuid, vote) {
+    this.PostHttpRequest(this.url + "submit/" + uuid + "/" + vote, {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
   }
 
-  static averageDay(event: GunsCovidEvents, uuid, day){
-    this.GetHttpRequest(CovidApiService.url + "average/" + uuid + "/" + day, {}, {}, event.OnAverageDay, event.OnErrorTriggered);
+  averageDay(event: GunsCovidEvents, uuid, day) {
+    this.GetHttpRequest(this.url + "average/" + uuid + "/" + day, {}, {}, event.OnAverageDay, event.OnErrorTriggered);
   }
 
-  static casesTodayGaranhuns(event: GunsCovidEvents, uuid){
-    this.GetHttpRequest(CovidApiService.url + "today/" + uuid + "/garanhuns", {}, {}, event.OnCasesTodayGaranhuns, event.OnErrorTriggered);
+  casesTodayGaranhuns(event: GunsCovidEvents, uuid) {
+    this.GetHttpRequest(this.url + "today/" + uuid + "/garanhuns", {}, {}, event.OnCasesTodayGaranhuns, event.OnErrorTriggered);
   }
 
-  static updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking){
-    this.PutHttpRequest(CovidApiService.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking, {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
+  updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking) {
+    this.PutHttpRequest(this.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking, {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
   }
 
-  public static GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  private GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       new HTTP().get(
         addr,
@@ -63,7 +63,7 @@ export class CovidApiService {
     }
   }
 
-  public static PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  private PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       if (typeof headers != "object" || headers === null) {
         headers = {};
@@ -103,7 +103,7 @@ export class CovidApiService {
     }
   }
 
-  public static PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  private PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       if (typeof headers != "object" || headers === null) {
         headers = {};
@@ -145,22 +145,22 @@ export class CovidApiService {
 }
 
 export class GunsCovidEvents {
-  OnRegisterSuccess(data){
+  OnRegisterSuccess(data) {
     console.log(data);
   }
-  OnSubmiteVote(data){
+  OnSubmiteVote(data) {
     console.log(data);
   }
-  OnAverageDay(data){
+  OnAverageDay(data) {
     console.log(data);
   }
-  OnCasesTodayGaranhuns(data){
+  OnCasesTodayGaranhuns(data) {
     console.log(data);
   }
-  OnUpdatePosition(data){
+  OnUpdatePosition(data) {
     console.log(data);
   }
-  OnErrorTriggered(data){
+  OnErrorTriggered(data) {
     console.log(data);
   }
 }
@@ -209,7 +209,7 @@ export const GunsCovidResponses = {
     UUID_FAILED: 4,
     //MEDIA MAXIMA E MINIMA ENVIADA COM SUCESSO
     AVERAGE_MAX_AND_MIN_AGLOMERATION_SUCCESS: 10,
-  }, 
+  },
 
   UPDATE_POSITION: {
     //UUID INVALIDA

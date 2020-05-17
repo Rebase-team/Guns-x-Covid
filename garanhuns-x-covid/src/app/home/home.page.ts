@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Device } from "@ionic-native/device/ngx";
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { Subject, NEVER, interval } from 'rxjs';
 import { switchMap, materialize, dematerialize } from 'rxjs/operators';
+import { GunsCovidEvents, CovidApiService, GunsCovidResponses } from '../services/covid-api.service';
+import { InfoCrowdingService } from '../services/info-crowding.service';
+import { Storage } from "@ionic/storage";
 
 const geolib = require('geolib');
 
@@ -16,33 +18,44 @@ const geolib = require('geolib');
 })
 
 export class HomePage{
-  source = interval(1000);
+  average = {
+    current: {
+      msg: "~",
+      color: ""
+    },
+    min: "~",
+    max: "~"
+  };
+  source = interval(5000);
   pauser = new Subject();
   disabledAnswer: boolean = false;
-  uuid = this.device.uuid;
   locationCoords: any;
-  
+  dataNotCollected: boolean = true;
+
   constructor(private alert: AlertController,
-              private device: Device,
               private androidPermissions: AndroidPermissions,
               private locationAccuracy: LocationAccuracy,
-              private geolocation: Geolocation) {
+              private geolocation: Geolocation,
+              private covidApi: CovidApiService,
+              private storage: Storage,
+              private infoCrowding: InfoCrowdingService) {
   }
 
   ionViewWillEnter() {
+    this.showCasesTodayGuns();
     this.pauser
       .pipe(
         switchMap(paused => paused ? NEVER : this.source.pipe(materialize())),
         dematerialize()
       )
       .subscribe(() => {
-        this.showInfoCrowding();
+        this.showCasesTodayGuns();
       });
     this.pauser.next(false);
   }
 
   ionViewDidLeave() {
-    //Pausa a função this.showInfoCrowding()
+    //Pausa a função showCasesTodayGuns()
     this.pauser.next(true);
   }
 
@@ -140,10 +153,45 @@ export class HomePage{
     alert.present();
   }
 
-  //Status do App
-  private showInfoCrowding(){
-    console.log("Aqui");
-    //Chamar em tempo real função que pega dados sobre 
-    //movimentação/aglomeração no dia.
+  //Balanço de algomeração no dia
+  private showCasesTodayGuns(){
+    let event = new GunsCovidEvents();
+    event.OnCasesTodayGaranhuns = (data) => {
+      let dataJSON = JSON.parse(data.data);
+      switch (dataJSON.response) {
+        case GunsCovidResponses.CASES_TODAY_GARANHUNS.AVERAGE_MAX_AND_MIN_AGLOMERATION_SUCCESS:
+          this.average = {
+            current: {
+              msg: this.infoCrowding.msgStatusCrowding(dataJSON.parameters.Average),
+              color: this.infoCrowding.colorStatusCrowding(dataJSON.parameters.Average)
+            },
+            min: dataJSON.parameters.SmallerAgglomeration.Start + " às " +
+              dataJSON.parameters.SmallerAgglomeration.End,
+            max: dataJSON.parameters.BiggerAgglomeration.Start + " às " +
+              dataJSON.parameters.BiggerAgglomeration.End
+          };
+          if (Object(Object.values(dataJSON).includes(0))) {
+            this.dataNotCollected = false;
+          }
+          else{
+            this.dataNotCollected = true;
+          }
+          break;
+        case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_FAILED:
+          console.log("UUID falhou.");
+          break;
+        case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_INVALID:
+          console.log("UUID inválido.");
+          break;
+        default:
+          console.log("Algo inesperado ocorreu");
+      }
+    }
+    event.OnErrorTriggered = (error) => {
+      console.log(error);
+    }
+    this.storage.get("uuid").then((uuid) => {
+      this.covidApi.casesTodayGaranhuns(event,uuid);
+    })
   }
 }

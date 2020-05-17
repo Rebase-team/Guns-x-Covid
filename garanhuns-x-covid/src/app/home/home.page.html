@@ -38,7 +38,7 @@
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft top2" size="6">
-              <ion-label class="white">Alto</ion-label>
+              <ion-label [color]="average.current.color" class="white">{{average.current.msg}}</ion-label>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -48,7 +48,7 @@
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft top2" size="6">
-              <ion-label class="white">8:00 às 10:00</ion-label>
+              <ion-label class="white">{{average.max}}</ion-label>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -58,12 +58,12 @@
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft top2" size="6">
-              <ion-label class="white">12:00 às 14:00</ion-label>
+              <ion-label class="white">{{average.min}}</ion-label>
             </ion-col>
           </ion-row>
         </ion-grid>
       </div>
-      <p class="align textRed">O aplicativo precisa de participação do público para gerar
+      <p *ngIf="dataNotCollected==false" class="align textRed">O aplicativo precisa de participação do público para gerar
         informações suficientes.
       </p>
     </div>

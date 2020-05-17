@@ -26,7 +26,11 @@
           <ion-toggle [(ngModel)]="terms" slot="start" color="secondary" checked></ion-toggle>
         </ion-item>
         <p>Aceite os termos de uso e clique em <b>Finalizado</b> para começar!</p>
-        <ion-button (click)="btnGoHome()" mode=ios>Finalizado</ion-button>
+        <div class="ion-padding">
+          <ion-button [disabled]="spinner" (click)="btnGoHome()" expand="block" mode="ios">
+          <ion-spinner *ngIf="spinner" name="bubbles"></ion-spinner>
+        <ion-label *ngIf="spinner==false">Finalizado</ion-label></ion-button>
+        </div>
       </ion-slide>
     </ion-slides>
   </ion-content>
