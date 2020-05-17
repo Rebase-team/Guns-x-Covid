@@ -8,17 +8,17 @@
       <p class="center placeholderColor">Escolha um dos níveis abaixo</p>
     </div>
     <div class="margin top">
-      <ion-segment [disabled]="disabledAnswer" (ionChange)="checkGPSPermission()" mode="ios">
-        <ion-segment-button class="red" value=1>
+      <ion-segment [(ngModel)]="vote" [disabled]="disabledAnswer" (ionChange)="checkGPSPermission()" mode="ios">
+        <ion-segment-button class="red" value=4>
           <ion-label class="white"><strong>Muita alta</strong></ion-label>
         </ion-segment-button>
-        <ion-segment-button class="yellow" value=2>
+        <ion-segment-button class="yellow" value=3>
           <ion-label class="white"><strong>Alta</strong></ion-label>
         </ion-segment-button>
-        <ion-segment-button class="blue" value=3>
+        <ion-segment-button class="blue" value=2>
           <ion-label class="white"><strong>Normal</strong></ion-label>
         </ion-segment-button>
-        <ion-segment-button class="green" value=4>
+        <ion-segment-button class="green" value=1>
           <ion-label class="white"><strong>Baixa</strong></ion-label>
         </ion-segment-button>
       </ion-segment>
