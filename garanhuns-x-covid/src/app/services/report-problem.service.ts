@@ -5,7 +5,7 @@ import { HttpClient } from "@angular/common/http"
   providedIn: 'root'
 })
 export class ReportProblemService {
-  url = "https://api.telegram.org/botADD_YOUR_TOKEN_HERE/sendMessage?chat_id=@gunscovid&text=";
+  url = "";
   constructor(private http: HttpClient) { }
 
   reportProblem(message){
