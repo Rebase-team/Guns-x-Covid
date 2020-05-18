@@ -10,23 +10,31 @@ export class CovidApiService {
   url = "https://api-covid.fun/covid/";
 
   registerUser(event: GunsCovidEvents, uuid) {
-    this.PutHttpRequest(this.url + "uuid/" + uuid, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
+    this.PutHttpRequest(this.url + "uuid/" + uuid + "/", {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
   }
 
   submitVote(event: GunsCovidEvents, uuid, vote) {
-    this.PostHttpRequest(this.url + "submit/" + uuid + "/" + vote, {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
+    this.PostHttpRequest(this.url + "submit/" + uuid + "/" + vote + "/", {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
   }
 
   averageDay(event: GunsCovidEvents, uuid, day) {
-    this.GetHttpRequest(this.url + "average/" + uuid + "/" + day, {}, {}, event.OnAverageDay, event.OnErrorTriggered);
+    this.GetHttpRequest(this.url + "average/" + uuid + "/" + day + "/", {}, {}, event.OnAverageDay, event.OnErrorTriggered);
   }
 
-  casesTodayGaranhuns(event: GunsCovidEvents, uuid) {
-    this.GetHttpRequest(this.url + "today/" + uuid + "/garanhuns", {}, {}, event.OnCasesTodayGaranhuns, event.OnErrorTriggered);
+  crowdingTodayGaranhuns(event: GunsCovidEvents, uuid) {
+    this.GetHttpRequest(this.url + "today/" + uuid + "/garanhuns" + "/", {}, {}, event.OnCrowdingTodayGaranhuns, event.OnErrorTriggered);
   }
 
   updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking) {
-    this.PutHttpRequest(this.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking, {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
+    this.PutHttpRequest(this.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking + "/", {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
+  }
+
+  casesCovidGuns(event: GunsCovidEvents, uuid){
+    this.GetHttpRequest(this.url + "report/" + uuid + "/state/pe/garanhuns/", {}, {}, event.OnCasesCovidGuns, event.OnErrorTriggered);
+  }
+
+  casesCovidPe(event: GunsCovidEvents, uuid){
+    this.GetHttpRequest(this.url + "report/" + uuid + "/state/pe/", {}, {}, event.OnCasesCovidPe, event.OnErrorTriggered);
   }
 
   private GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
@@ -154,10 +162,16 @@ export class GunsCovidEvents {
   OnAverageDay(data) {
     console.log(data);
   }
-  OnCasesTodayGaranhuns(data) {
+  OnCrowdingTodayGaranhuns(data) {
     console.log(data);
   }
   OnUpdatePosition(data) {
+    console.log(data);
+  }
+  OnCasesCovidGuns(data){
+    console.log(data);
+  }
+  OnCasesCovidPe(data){
     console.log(data);
   }
   OnErrorTriggered(data) {

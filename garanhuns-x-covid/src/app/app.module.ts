@@ -15,7 +15,6 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { HTTP } from "@ionic-native/http/ngx";
 import { HttpClientModule } from "@angular/common/http";
-import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +23,6 @@ import { UniqueDeviceID } from '@ionic-native/unique-device-id/ngx';
   providers: [
     StatusBar,
     HTTP,
-    UniqueDeviceID,
     AndroidPermissions,
     LocationAccuracy,
     Geolocation,

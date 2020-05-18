@@ -45,14 +45,14 @@ export class HomePage{
   }
 
   ionViewWillEnter() {
-    this.showCasesTodayGuns();
+    this.showCrowdingTodayGuns();
     this.pauser
       .pipe(
         switchMap(paused => paused ? NEVER : this.source.pipe(materialize())),
         dematerialize()
       )
       .subscribe(() => {
-        this.showCasesTodayGuns();
+        this.showCrowdingTodayGuns();
         setTimeout(this.sendLocation, 20000);
       });
     this.pauser.next(false);
@@ -64,9 +64,9 @@ export class HomePage{
   }
 
   //Balanço de aglomeração no dia
-  private showCasesTodayGuns(){
+  private showCrowdingTodayGuns(){
     let event = new GunsCovidEvents();
-    event.OnCasesTodayGaranhuns = (data) => {
+    event.OnCrowdingTodayGaranhuns = (data) => {
       let dataJSON = JSON.parse(data.data);
       switch (dataJSON.response) {
         case GunsCovidResponses.CASES_TODAY_GARANHUNS.AVERAGE_MAX_AND_MIN_AGLOMERATION_SUCCESS:
@@ -102,7 +102,7 @@ export class HomePage{
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
-      this.covidApi.casesTodayGaranhuns(event,uuid);
+      this.covidApi.crowdingTodayGaranhuns(event,uuid);
     });
   }
 

@@ -26,7 +26,6 @@
     "@ionic-native/location-accuracy": "^5.25.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
-    "@ionic-native/unique-device-id": "^5.26.0",
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.2.0",
     "cordova-android": "8.1.0",
@@ -36,7 +35,6 @@
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-request-location-accuracy": "^2.3.0",
     "cordova-plugin-uid": "^1.3.0",
-    "cordova-plugin-uniquedeviceid": "^1.3.2",
     "cordova-sqlite-storage": "^5.0.0",
     "core-js": "^2.5.4",
     "geolib": "^3.2.1",
@@ -44,6 +42,7 @@
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.5.5",
     "tslib": "^1.9.0",
+    "uuid": "^8.0.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -91,7 +90,6 @@
       "cordova-plugin-request-location-accuracy": {
         "PLAY_SERVICES_LOCATION_VERSION": "16.+"
       },
-      "cordova-plugin-uniquedeviceid": {},
       "cordova-plugin-dreamover-uid": {}
     },
     "platforms": [
