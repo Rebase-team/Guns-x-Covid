@@ -107,7 +107,7 @@ export class HomePage{
   }
 
   //Checa permissão do GPS
-  checkGPSPermission() {
+  btnCheckGPSPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
       result => {
         if (result.hasPermission) {

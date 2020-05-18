@@ -8,7 +8,7 @@
       <p class="center placeholderColor">Escolha um dos níveis abaixo</p>
     </div>
     <div class="margin top">
-      <ion-segment [(ngModel)]="vote" [disabled]="disabledAnswer" (ionChange)="checkGPSPermission()" mode="ios">
+      <ion-segment [(ngModel)]="vote" [disabled]="disabledAnswer" (ionChange)="btnCheckGPSPermission()" mode="ios">
         <ion-segment-button class="red" value=4>
           <ion-label class="white"><strong>Muita alta</strong></ion-label>
         </ion-segment-button>
