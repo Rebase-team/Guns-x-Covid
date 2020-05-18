@@ -7,37 +7,37 @@ const __UNSECURE_DEBUG_MODE = true;
   providedIn: 'root'
 })
 export class CovidApiService {
-  url = "https://api-covid.fun/covid/";
+  public static SERVER_ADDR = "https://api-covid.fun/covid/";
 
-  registerUser(event: GunsCovidEvents, uuid) {
-    this.PutHttpRequest(this.url + "uuid/" + uuid + "/", {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
+  public static registerUser(event: GunsCovidEvents, uuid) {
+    this.PutHttpRequest(this.SERVER_ADDR + "uuid/" + uuid + "/", {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
   }
 
-  submitVote(event: GunsCovidEvents, uuid, vote) {
-    this.PostHttpRequest(this.url + "submit/" + uuid + "/" + vote + "/", {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
+  public static submitVote(event: GunsCovidEvents, uuid, vote) {
+    this.PostHttpRequest(this.SERVER_ADDR + "submit/" + uuid + "/" + vote + "/", {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
   }
 
-  averageDay(event: GunsCovidEvents, uuid, day) {
-    this.GetHttpRequest(this.url + "average/" + uuid + "/" + day + "/", {}, {}, event.OnAverageDay, event.OnErrorTriggered);
+  public static averageDay(event: GunsCovidEvents, uuid, day) {
+    this.GetHttpRequest(this.SERVER_ADDR + "average/" + uuid + "/" + day + "/", {}, {}, event.OnAverageDay, event.OnErrorTriggered);
   }
 
-  crowdingTodayGaranhuns(event: GunsCovidEvents, uuid) {
-    this.GetHttpRequest(this.url + "today/" + uuid + "/garanhuns" + "/", {}, {}, event.OnCrowdingTodayGaranhuns, event.OnErrorTriggered);
+  public static crowdingTodayGaranhuns(event: GunsCovidEvents, uuid) {
+    this.GetHttpRequest(this.SERVER_ADDR + "today/" + uuid + "/garanhuns" + "/", {}, {}, event.OnCrowdingTodayGaranhuns, event.OnErrorTriggered);
   }
 
-  updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking) {
-    this.PutHttpRequest(this.url + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking + "/", {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
+  public static updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking) {
+    this.PutHttpRequest(this.SERVER_ADDR + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking + "/", {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
   }
 
-  casesCovidGuns(event: GunsCovidEvents, uuid){
-    this.GetHttpRequest(this.url + "report/" + uuid + "/state/pe/garanhuns/", {}, {}, event.OnCasesCovidGuns, event.OnErrorTriggered);
+  public static casesCovidGuns(event: GunsCovidEvents, uuid){
+    this.GetHttpRequest(this.SERVER_ADDR + "report/" + uuid + "/state/pe/garanhuns/", {}, {}, event.OnCasesCovidGuns, event.OnErrorTriggered);
   }
 
-  casesCovidPe(event: GunsCovidEvents, uuid){
-    this.GetHttpRequest(this.url + "report/" + uuid + "/state/pe/", {}, {}, event.OnCasesCovidPe, event.OnErrorTriggered);
+  public static casesCovidPe(event: GunsCovidEvents, uuid){
+    this.GetHttpRequest(this.SERVER_ADDR + "report/" + uuid + "/state/pe/", {}, {}, event.OnCasesCovidPe, event.OnErrorTriggered);
   }
 
-  private GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  public static  GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       new HTTP().get(
         addr,
@@ -71,12 +71,12 @@ export class CovidApiService {
     }
   }
 
-  private PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  public static  PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
       new HTTP().post(
         addr,
         parameters,
@@ -102,7 +102,7 @@ export class CovidApiService {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
       for (let prop in headers) {
         xhr.setRequestHeader(prop, headers[prop]);
       }
@@ -111,12 +111,12 @@ export class CovidApiService {
     }
   }
 
-  private PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  public static  PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
       new HTTP().put(
         addr,
         parameters,
@@ -142,7 +142,7 @@ export class CovidApiService {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
       for (let prop in headers) {
         xhr.setRequestHeader(prop, headers[prop]);
       }

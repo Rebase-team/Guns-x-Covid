@@ -12,9 +12,7 @@ export class AlertService {
     const alert = await this.alert.create({
       header: title,
       message: msg,
-      buttons: [
-        "Entendi"
-      ]
+      buttons: ["Entendi"]
     });
     alert.present();
   }

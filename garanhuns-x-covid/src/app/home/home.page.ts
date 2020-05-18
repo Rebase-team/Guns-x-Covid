@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { Subject, NEVER, interval } from 'rxjs';
-import { switchMap, materialize, dematerialize } from 'rxjs/operators';
 import { GunsCovidEvents, CovidApiService, GunsCovidResponses } from '../services/covid-api.service';
 import { InfoCrowdingService } from '../services/info-crowding.service';
 import { Storage } from "@ionic/storage";
 import { AlertService } from '../services/alert.service';
+import { UuidSvc } from '../UuidStorage';
+
 
 const geolib = require('geolib');
 
@@ -16,6 +16,61 @@ const geolib = require('geolib');
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
+
+class HttpPolling {
+
+  private covidSvc: CovidApiService;
+  private pollingHandle: NodeJS.Timer;
+  private isEnabled: Boolean = false;
+
+  private pvoidAgglomeration: any;
+  private pvoidUpdatePos: any;
+  private pvoidCallbackError: any;
+  private pollingCurrentInterval: number;
+
+  constructor(pvoidAgglomeration, pvoidUpdPosition, pvoidErr, pollingInterval){
+    this.pvoidAgglomeration = pvoidAgglomeration;
+    this.pvoidUpdatePos = pvoidUpdPosition;
+    this.pvoidCallbackError = pvoidErr;
+    this.pollingCurrentInterval = pollingInterval || 2000;
+  }
+
+  public beginPolling(){
+    if (!this.isEnabled){
+      this.isEnabled = true;
+
+      let pvoidPollingStub = (data) => {
+        let covidEvt = new GunsCovidEvents();
+        covidEvt.OnCrowdingTodayGaranhuns = this.pvoidAgglomeration;
+        covidEvt.OnUpdatePosition = this.pvoidUpdatePos;
+        covidEvt.OnErrorTriggered = this.pvoidCallbackError;
+
+        UuidSvc.getUuid((uuid) => {
+          if (uuid == ''){
+            console.error('Invalid uuid value.');
+          }
+          else{
+            CovidApiService.crowdingTodayGaranhuns(covidEvt, uuid);
+            CovidApiService.updatePosition(covidEvt, uuid);
+          }
+        });
+
+        
+
+        covidEvt = null;
+      }
+      this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
+    }
+  }
+
+  public stopPolling(){
+    if (this.isEnabled){
+      this.isEnabled = false;
+      clearTimeout(this.pollingHandle);
+    }
+  }
+
+}
 
 export class HomePage{
   vote: string = "";
@@ -28,8 +83,6 @@ export class HomePage{
     max: "~"
   };
   coords: any = {};
-  source: any = interval(5000);
-  pauser = new Subject();
   disabledAnswer: boolean = false;
   dataNotCollected: boolean = true;
 
@@ -45,15 +98,7 @@ export class HomePage{
   ionViewWillEnter() {
     this.storage.get("uuid").then((uuid) => {
       if (uuid != null || uuid != undefined) {
-        this.showCrowdingTodayGuns();
-        this.pauser
-          .pipe(
-            switchMap(paused => paused ? NEVER : this.source.pipe(materialize())),
-            dematerialize()
-          )
-          .subscribe(() => {
-            this.showCrowdingTodayGuns();
-          });
+
         this.pauser.next(false);
       }
     })
@@ -161,7 +206,7 @@ export class HomePage{
       let isInCity: boolean = geolib.isPointWithinRadius(
         { latitude: -8.891052, longitude: -36.494519 },
         { latitude: response.coords.latitude, longitude: response.coords.longitude },
-        50000);
+        5000);
         
       /*let preciseDistance = geolib.getPreciseDistance(
           { latitude: -8.891052, longitude: -36.494519 },

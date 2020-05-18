@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CovidApiService, GunsCovidEvents } from '../services/covid-api.service';
+import { CovidApiService, GunsCovidEvents, GunsCovidResponses } from '../services/covid-api.service';
 import { Storage } from "@ionic/storage";
 
 @Component({
@@ -8,16 +8,29 @@ import { Storage } from "@ionic/storage";
   styleUrls: ['./covid.page.scss'],
 })
 export class CovidPage {
+  dataGus = {
+    confirm: "0",
+    recovered: "0",
+    suspect: "0",
+    death: "0",
+  }
+
+  dataPe = {
+    confirm: "0",
+    discarded: "0",
+    suspect: "0",
+    death: "0",
+  }
 
   constructor(private covidApi: CovidApiService,
     private storage: Storage) { }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.casesCovidGuns();
     this.casesCovidPe();
   }
 
-  casesCovidGuns(){
+  casesCovidGuns() {
     let event = new GunsCovidEvents();
     event.OnCasesCovidGuns = (data) => {
       let dataJSON = JSON.parse(data.data);
@@ -31,11 +44,17 @@ export class CovidPage {
     });
   }
 
-  casesCovidPe(){
+  casesCovidPe() {
     let event = new GunsCovidEvents();
     event.OnCasesCovidPe = (data) => {
       let dataJSON = JSON.parse(data.data);
-      console.log(dataJSON);
+      this.dataPe = {
+        confirm: dataJSON.parameters.cases,
+        discarded: dataJSON.parameters.refuses,
+        suspect: dataJSON.parameters.suspects,
+        death: dataJSON.parameters.deaths,
+      }
+
     }
     event.OnErrorTriggered = (error) => {
       console.log(error);
