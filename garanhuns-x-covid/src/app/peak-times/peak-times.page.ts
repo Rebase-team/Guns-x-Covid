@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CovidApiService, GunsCovidEvents, GunsCovidResponses } from '../services/covid-api.service';
 import { Storage } from "@ionic/storage";
-import { ReportProblemService } from '../services/report-problem.service';
 import { InfoCrowdingService } from '../services/info-crowding.service';
 
 @Component({
@@ -81,7 +80,6 @@ export class PeakTimes {
   
   constructor(private covidApi: CovidApiService,
               private storage: Storage,
-              private report: ReportProblemService,
               private infoCrowding: InfoCrowdingService) { }
 
   ionViewWillEnter() {
@@ -109,17 +107,17 @@ export class PeakTimes {
           }
           break;
         case GunsCovidResponses.AVERAGE_DAY.UUID_FAILED:
-          this.report.reportProblem("Média diária: falha no UUID.");
+          ////
           break;
         case GunsCovidResponses.AVERAGE_DAY.UUID_INVALID:
-          this.report.reportProblem("Média diária: UUID inválido.");
+          ////
           break;
         default:
-          this.report.reportProblem("Média diária: errro inesperado.");
+          ////
       }
     }
     event.OnErrorTriggered = (error) => {
-      this.report.reportProblem("Média diária: ERROR.");
+      ////
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {

@@ -3,7 +3,6 @@ import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AlertService } from "src/app/services/alert.service";
 import { GunsCovidEvents, GunsCovidResponses, CovidApiService } from '../services/covid-api.service';
-import { ReportProblemService } from '../services/report-problem.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -19,8 +18,7 @@ export class SlidePage {
 	constructor(private navigation: NavController,
 		private storage: Storage,
 		private alert: AlertService,
-		private covidApi: CovidApiService,
-		private report: ReportProblemService) { }
+		private covidApi: CovidApiService) { }
 
 	ionViewWillEnter(){
 		this.uuid = uuidv4();
@@ -50,16 +48,20 @@ export class SlidePage {
 					this.storage.set("uuid", this.uuid);
 					this.storage.set("firstAccess", false);
 					this.navigation.navigateRoot("tabs");
+					////
 					break;
 				case GunsCovidResponses.REGISTER_USER.UUID_FAILED:
+					////
 					break;
 				case GunsCovidResponses.REGISTER_USER.UUID_INVALID:
+					////
 					break;
 				default:
 
 			}
 		}
 		event.OnErrorTriggered = (error) => {
+			////
 			console.log(error);
 		}
 		this.covidApi.registerUser(event, this.uuid);

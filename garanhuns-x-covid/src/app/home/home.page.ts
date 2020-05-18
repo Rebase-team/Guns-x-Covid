@@ -8,7 +8,6 @@ import { GunsCovidEvents, CovidApiService, GunsCovidResponses } from '../service
 import { InfoCrowdingService } from '../services/info-crowding.service';
 import { Storage } from "@ionic/storage";
 import { AlertService } from '../services/alert.service';
-import { ReportProblemService } from '../services/report-problem.service';
 
 const geolib = require('geolib');
 
@@ -40,22 +39,24 @@ export class HomePage{
               private geolocation: Geolocation,
               private covidApi: CovidApiService,
               private storage: Storage,
-              private infoCrowding: InfoCrowdingService,
-              private report: ReportProblemService) {
+              private infoCrowding: InfoCrowdingService) {
   }
 
   ionViewWillEnter() {
-    this.showCrowdingTodayGuns();
-    this.pauser
-      .pipe(
-        switchMap(paused => paused ? NEVER : this.source.pipe(materialize())),
-        dematerialize()
-      )
-      .subscribe(() => {
+    this.storage.get("uuid").then((uuid) => {
+      if (uuid != null || uuid != undefined) {
         this.showCrowdingTodayGuns();
-        setTimeout(this.sendLocation, 20000);
-      });
-    this.pauser.next(false);
+        this.pauser
+          .pipe(
+            switchMap(paused => paused ? NEVER : this.source.pipe(materialize())),
+            dematerialize()
+          )
+          .subscribe(() => {
+            this.showCrowdingTodayGuns();
+          });
+        this.pauser.next(false);
+      }
+    })
   }
 
   ionViewDidLeave() {
@@ -88,17 +89,17 @@ export class HomePage{
           }
           break;
         case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_FAILED:
-          this.report.reportProblem("Aglom. diária em Guns: Falha no UUID.");
+          ////
           break;
         case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_INVALID:
-          this.report.reportProblem("Aglom. diária em Guns: UUID inválido.");
+          ////
           break;
         default:
-          this.report.reportProblem("Aglom. diária em Guns: erro inesperado.");
+          ////
       }
     }
     event.OnErrorTriggered = (error) => {
-      this.report.reportProblem("Aglom. diária em Guns: ERROR.");
+      ////
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
@@ -178,6 +179,7 @@ export class HomePage{
       }
     }).catch(() => {
       this.disabledAnswer = false;
+      ////
       this.alert.activeAlert('Tente novamente', "Ocorreu uma falha ao tentar pegar sua localização. Verifique sua conexão com à Internet.");
     });
   }
@@ -195,32 +197,32 @@ export class HomePage{
           `como anda a movimentação no centro.</strong>`);
           break;
         case GunsCovidResponses.SUBMIT_VOTE.ERROR_WHEN_VOTING:
-          this.report.reportProblem("Enviar voto: erro ao tentar votar.");
+          ////
           this.alert.activeAlert("Erro ao responder", "Tente responder novamente.");
           break;
         case GunsCovidResponses.SUBMIT_VOTE.TOO_MANY_VOTES:
-          this.report.reportProblem("Enviar voto: não pode votar ainda.");
+          ////
           this.alert.activeAlert("Você já respondeu", "Daqui uma hora a partir da última vez que você respondeu você pode responder novamente.");
           break;
         case GunsCovidResponses.SUBMIT_VOTE.UUID_FAILED:
           this.disabledAnswer = false;
-          this.report.reportProblem("Enviar voto: falha no UUID.");
+          ////
           break;
         case GunsCovidResponses.SUBMIT_VOTE.UUID_INVALID:
           this.disabledAnswer = false;
-          this.report.reportProblem("Enviar voto: UUID inválido.");
+          ////
           break;
         case GunsCovidResponses.SUBMIT_VOTE.VOTE_INVALID:
           this.disabledAnswer = false;
-          this.report.reportProblem("Enviar voto: voto inválido.");
+          ////
           break;
         default:
           this.disabledAnswer = false;
-          this.report.reportProblem("Enviar voto: erro inesperado.");
+          ////
       }
     }
     event.OnErrorTriggered = (error) => {
-      this.report.reportProblem("Enviar voto: ERROR.");
+      ////
       this.disabledAnswer = false;
       console.log(error);
     }
@@ -238,27 +240,27 @@ export class HomePage{
           //Sucesso
           break;
         case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
-          this.report.reportProblem("Enviar localiz.: erro ao retornar local. do usuário.");
+          ////
           break;
         case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
-          this.report.reportProblem("Enviar localiz.: erro ao atualizar local. do usuário.");
+          ////
           break;
         case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
-          this.report.reportProblem("Enviar localiz.: falha no UUID.");
+          ////
           break;
         case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
-          this.report.reportProblem("Enviar localiz.: UUID inválido.");
+          ////
           break;
         default:
-          this.report.reportProblem("Enviar localiz.: erro inesperado.");
+          ////
       }
     }
     event.OnErrorTriggered = (error) => {
-      this.report.reportProblem("Enviar localiz.: ERROR.");
+      ////
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
-      this.covidApi.updatePosition(event, uuid, this.coords.latitude, this.coords.longitude, true);
+      this.covidApi.updatePosition(event, uuid, this.coords.latitude, this.coords.longitude, 1);
     });
   }
 }
