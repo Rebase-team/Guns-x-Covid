@@ -29,7 +29,7 @@ export class HomePage implements OnInit{
   dataNotCollected: boolean = true;
 
   httpPolling: HttpPolling;
- 
+  a = [0,0,0];
   constructor(private alert: AlertService, 
     private androidPermissions: AndroidPermissions, 
     private locationAccuracy: LocationAccuracy, 
@@ -40,9 +40,9 @@ export class HomePage implements OnInit{
   ngOnInit(){
     this.checkGPSPermission();
     this.httpPolling = new HttpPolling(
-      this.showCrowdingTodayGuns, 
-      this.checkGPSPermission,
-      function(err){ console.log('Ocorreu um erro.')}, 
+      function(data){ this.a[0] = data }, 
+      function(data){ this.a[1] = data },
+      function(err){ this.a[2] = err }, 
       5000, this.storage, this.geolocation);
     this.httpPolling.beginPolling();
   }
