@@ -28,20 +28,13 @@ export class HomePage implements OnInit{
   disabledAnswer: boolean = false;
 
   httpPolling: HttpPolling;
-  constructor(private alert: AlertService, 
-    private androidPermissions: AndroidPermissions, 
-    private locationAccuracy: LocationAccuracy, 
-    private geolocation: Geolocation, 
-    private storage: Storage, 
-    private infoCrowding: InfoCrowdingService) {}
+  constructor(private alert: AlertService, private androidPermissions: AndroidPermissions, private locationAccuracy: LocationAccuracy, private geolocation: Geolocation, private storage: Storage, private infoCrowding: InfoCrowdingService) {}
 
   ngOnInit(){
     this.checkGPSPermission();
-    this.showCrowdingTodayGuns();
-    this.updatePosition();
-    this.httpPolling = new HttpPolling(
-      this.showCrowdingTodayGuns, 
-      this.updatePosition,
+    //this.showCrowdingTodayGuns();
+    //this.updatePosition();
+    this.httpPolling = new HttpPolling(this.OnAgglomerationData, this.OnUpdatedPosition,
       function(err){ console.log(err); }, 
       5000, this.storage, this.geolocation);
     this.httpPolling.beginPolling();
@@ -81,81 +74,35 @@ export class HomePage implements OnInit{
 
   //Pede para ativar GPS
   private askToTurnOnGPS() {
-    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-      () => {
-        this.updatePosition();
+    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(() => {
+        this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
+          let event = new GunsCovidEvents();
+          event.OnUpdatePosition = (data) => {
+            let dataJSON = JSON.parse(data.data);
+            switch(dataJSON.response){
+              case GunsCovidResponses.UPDATE_POSITION.USER_LOCATION_SUCCESS_RETURNED:
+                break;
+              case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
+                break;
+              case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
+                break;
+              case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
+                break;
+              case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
+                break;
+              default:
+            }
+          }
+          this.storage.get("uuid").then((uuid) => {
+            if 
+            CovidApiService.updatePosition(event, uuid, response.coords.latitude, response.coords.longitude, 1);
+          });
+        });
       },
       (error) => {
         this.alert.activeAlert("Problema com a permissão", "Erro ao tentar pegar permissão de GPS.");
       }
     );
-  }
-
-  //Balanço de aglomeração no dia
-  showCrowdingTodayGuns(){
-    let event = new GunsCovidEvents();
-    event.OnCrowdingTodayGaranhuns = (data) => {
-      let dataJSON = JSON.parse(data.data);
-      switch (dataJSON.response) {
-        case GunsCovidResponses.CASES_TODAY_GARANHUNS.AVERAGE_MAX_AND_MIN_AGLOMERATION_SUCCESS:
-          this.average = {
-            current: {
-              msg: this.infoCrowding.msgStatusCrowding(dataJSON.parameters.Average),
-              color: this.infoCrowding.colorStatusCrowding(dataJSON.parameters.Average)
-            },
-            min: dataJSON.parameters.SmallerAgglomeration.Start + " às " +
-              dataJSON.parameters.SmallerAgglomeration.End,
-            max: dataJSON.parameters.BiggerAgglomeration.Start + " às " +
-              dataJSON.parameters.BiggerAgglomeration.End
-          };
-          break;
-        case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_FAILED:
-          ////
-          break;
-        case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_INVALID:
-          ////
-          break;
-        default:
-          ////
-      }
-    }
-    event.OnErrorTriggered = (error) => {
-      ////
-      console.log(error);
-    }
-    this.storage.get("uuid").then((uuid) => {
-      CovidApiService.crowdingTodayGaranhuns(event,uuid);
-    });
-  }
-
-  //Enviar localização do usuário
-  updatePosition() {
-    this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
-      let event = new GunsCovidEvents();
-      event.OnUpdatePosition = (data) => {
-        let dataJSON = JSON.parse(data.data);
-        console.log(dataJSON);
-        switch(dataJSON.response){
-          case GunsCovidResponses.UPDATE_POSITION.USER_LOCATION_SUCCESS_RETURNED:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
-            break;
-          default:
-        }
-      }
-      event.OnErrorTriggered = (error) => {
-        console.log(error);
-      }
-      this.storage.get("uuid").then((uuid) => {
-        CovidApiService.updatePosition(event, uuid, response.coords.latitude, response.coords.longitude, 1);
-      });
-    });
   }
 
   //Enviar voto
@@ -173,10 +120,7 @@ export class HomePage implements OnInit{
         let dataJSON = JSON.parse(data.data);
         switch (dataJSON.response) {
           case GunsCovidResponses.SUBMIT_VOTE.VOTE_SUBMITED:
-            this.alert.activeAlert("Obrigado", "Continue interagindo com o App sempre que possível " +
-              "para contribuir com o bem-estar da cidade." +
-              `<br><strong>Daqui a uma hora você pode informar novamente ` +
-              `como anda a movimentação no centro.</strong>`);
+            this.alert.activeAlert("Obrigado", "Continue interagindo com o App sempre que possível para contribuir com o bem-estar da cidade.<br><strong>Daqui a uma hora você pode informar novamente como anda a movimentação no centro.</strong>");
             break;
           case GunsCovidResponses.SUBMIT_VOTE.ERROR_WHEN_VOTING:
             ////

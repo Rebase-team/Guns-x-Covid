@@ -350,3 +350,11 @@ export class HttpPolling {
   }
 
 }
+
+export class GpsAPI {
+
+  public static ReadDevicePosition(pCallback){
+    
+  }
+
+}
