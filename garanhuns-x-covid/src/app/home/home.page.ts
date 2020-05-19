@@ -91,7 +91,7 @@ export class HomePage implements OnInit{
   }
 
   //Balanço de aglomeração no dia
-  private showCrowdingTodayGuns(){
+  showCrowdingTodayGuns(){
     let event = new GunsCovidEvents();
     event.OnCrowdingTodayGaranhuns = (data) => {
       let dataJSON = JSON.parse(data.data);
@@ -134,7 +134,7 @@ export class HomePage implements OnInit{
   }
 
   //Enviar localização do usuário
-  private updatePosition() {
+  updatePosition() {
     this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
       let event = new GunsCovidEvents();
       event.OnUpdatePosition = (data) => {
