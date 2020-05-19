@@ -26,7 +26,6 @@ export class HomePage implements OnInit{
     max: "~"
   };
   disabledAnswer: boolean = false;
-  dataNotCollected: boolean = true;
 
   httpPolling: HttpPolling;
   constructor(private alert: AlertService, 
@@ -109,12 +108,6 @@ export class HomePage implements OnInit{
             max: dataJSON.parameters.BiggerAgglomeration.Start + " às " +
               dataJSON.parameters.BiggerAgglomeration.End
           };
-          if (Object(Object.values(dataJSON).includes(0))) {
-            this.dataNotCollected = false;
-          }
-          else{
-            this.dataNotCollected = true;
-          }
           break;
         case GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_FAILED:
           ////
