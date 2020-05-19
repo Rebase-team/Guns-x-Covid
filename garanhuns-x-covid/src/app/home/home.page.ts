@@ -29,7 +29,6 @@ export class HomePage implements OnInit{
   dataNotCollected: boolean = true;
 
   httpPolling: HttpPolling;
-  a = [0,0,0];
   constructor(private alert: AlertService, 
     private androidPermissions: AndroidPermissions, 
     private locationAccuracy: LocationAccuracy, 
