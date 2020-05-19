@@ -38,6 +38,8 @@ export class HomePage implements OnInit{
 
   ngOnInit(){
     this.checkGPSPermission();
+    this.showCrowdingTodayGuns();
+    this.updatePosition();
     this.httpPolling = new HttpPolling(
       this.showCrowdingTodayGuns, 
       this.updatePosition,
