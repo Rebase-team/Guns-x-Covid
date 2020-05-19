@@ -40,9 +40,9 @@ export class HomePage implements OnInit{
   ngOnInit(){
     this.checkGPSPermission();
     this.httpPolling = new HttpPolling(
-      function(data){ this.a[0] = data }, 
-      function(data){ this.a[1] = data },
-      function(err){ this.a[2] = err }, 
+      function(data){ console.log(data); }, 
+      function(data){ console.log(data); },
+      function(err){ console.log(err); }, 
       5000, this.storage, this.geolocation);
     this.httpPolling.beginPolling();
   }
