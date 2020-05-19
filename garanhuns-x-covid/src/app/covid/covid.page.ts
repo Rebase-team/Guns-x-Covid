@@ -40,7 +40,7 @@ export class CovidPage {
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
-      this.covidApi.casesCovidGuns(event, uuid);
+      CovidApiService.casesCovidGuns(event, uuid);
     });
   }
 
@@ -60,7 +60,7 @@ export class CovidPage {
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
-      this.covidApi.casesCovidPe(event, uuid);
+      CovidApiService.casesCovidPe(event, uuid);
     });
   }
 }

@@ -121,7 +121,7 @@ export class PeakTimes {
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
-      this.covidApi.averageDay(event, uuid, this.currentDay);
+      CovidApiService.averageDay(event, uuid, this.currentDay);
     })
   }
 }

@@ -61,9 +61,8 @@ export class SlidePage {
 			}
 		}
 		event.OnErrorTriggered = (error) => {
-			////
 			console.log(error);
 		}
-		this.covidApi.registerUser(event, this.uuid);
+		CovidApiService.registerUser(event, this.uuid);
 	}
 }

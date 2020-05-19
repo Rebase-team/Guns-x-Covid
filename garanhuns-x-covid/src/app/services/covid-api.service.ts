@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HTTP } from "@ionic-native/http/ngx"
+import { UuidSvc } from '../UuidStorage';
+import { Storage } from "@ionic/storage";
+import { Geolocation } from "@ionic-native/geolocation/ngx";
 
 const __UNSECURE_DEBUG_MODE = true;
 
@@ -7,34 +10,48 @@ const __UNSECURE_DEBUG_MODE = true;
   providedIn: 'root'
 })
 export class CovidApiService {
+
   public static SERVER_ADDR = "https://api-covid.fun/covid/";
+  //public static SERVER_ADDR = "http://192.168.0.107:14400/covid/"
 
   public static registerUser(event: GunsCovidEvents, uuid) {
-    this.PutHttpRequest(this.SERVER_ADDR + "uuid/" + uuid + "/", {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
+    this.PutHttpRequest(this.SERVER_ADDR + `uuid/${uuid}`, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
   }
 
   public static submitVote(event: GunsCovidEvents, uuid, vote) {
-    this.PostHttpRequest(this.SERVER_ADDR + "submit/" + uuid + "/" + vote + "/", {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
+    this.PostHttpRequest(this.SERVER_ADDR + `submit/${uuid}/${vote}`, {}, {}, event.OnSubmiteVote, event.OnErrorTriggered);
   }
 
   public static averageDay(event: GunsCovidEvents, uuid, day) {
-    this.GetHttpRequest(this.SERVER_ADDR + "average/" + uuid + "/" + day + "/", {}, {}, event.OnAverageDay, event.OnErrorTriggered);
+    this.GetHttpRequest(this.SERVER_ADDR + `average/${uuid}/${day}`, {}, {}, event.OnAverageDay, event.OnErrorTriggered);
   }
 
   public static crowdingTodayGaranhuns(event: GunsCovidEvents, uuid) {
-    this.GetHttpRequest(this.SERVER_ADDR + "today/" + uuid + "/garanhuns" + "/", {}, {}, event.OnCrowdingTodayGaranhuns, event.OnErrorTriggered);
+    this.GetHttpRequest(this.SERVER_ADDR + `today/${uuid}/garanhuns`, {}, {}, event.OnCrowdingTodayGaranhuns, event.OnErrorTriggered);
   }
 
   public static updatePosition(event: GunsCovidEvents, uuid, lat, lng, is_tracking) {
-    this.PutHttpRequest(this.SERVER_ADDR + "track/" + uuid + "/" + lat + "/" + lng + "/" + is_tracking + "/", {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
+    this.PutHttpRequest(this.SERVER_ADDR + `track/${uuid}/${lat}/${lng}/${is_tracking}`, {}, {}, event.OnUpdatePosition, event.OnErrorTriggered);
   }
 
   public static casesCovidGuns(event: GunsCovidEvents, uuid){
-    this.GetHttpRequest(this.SERVER_ADDR + "report/" + uuid + "/state/pe/garanhuns/", {}, {}, event.OnCasesCovidGuns, event.OnErrorTriggered);
+    this.GetHttpRequest(this.SERVER_ADDR + `report/${uuid}/state/pe/garanhuns`, {}, {}, event.OnCasesCovidGuns, event.OnErrorTriggered);
   }
 
   public static casesCovidPe(event: GunsCovidEvents, uuid){
-    this.GetHttpRequest(this.SERVER_ADDR + "report/" + uuid + "/state/pe/", {}, {}, event.OnCasesCovidPe, event.OnErrorTriggered);
+    this.GetHttpRequest(this.SERVER_ADDR + `report/${uuid}/state/pe`, {}, {}, event.OnCasesCovidPe, event.OnErrorTriggered);
+  }
+
+  public static casesCovidAllStates(event: GunsCovidEvents, uuid){
+    this.GetHttpRequest(this.SERVER_ADDR + `report/${uuid}/state/all`, {}, {}, event.OnCasesCovidAllStates, event.OnErrorTriggered);
+  }
+
+  public static casesCovidBrazil(event: GunsCovidEvents, uuid: string, date: string){
+    this.GetHttpRequest(this.SERVER_ADDR + `report/${uuid}/brazil/${date}`, {}, {}, event.OnCasesCovidBrazil, event.OnErrorTriggered);
+  }
+
+  public static casesCovidOfficialSources(event: GunsCovidEvents, uuid: string){
+    this.GetHttpRequest(this.SERVER_ADDR + `report/${uuid}/official`, {}, {}, event.OnCasesCovidOfficialSources, event.OnErrorTriggered);
   }
 
   public static  GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
@@ -52,7 +69,7 @@ export class CovidApiService {
     else {
       let xhr = new XMLHttpRequest();
       xhr.responseType = "text";
-      xhr.open("GET", addr + "?" + Object.keys(parameters).map(function (key) { return key + "=" + encodeURIComponent(parameters[key]) }).join("&"), true);
+      xhr.open("GET", addr + (Object.keys(parameters).length > 0 ? '?' : '') + Object.keys(parameters).map(function (key) { return key + "=" + encodeURIComponent(parameters[key]) }).join("&"), true);
       xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
       xhr.onreadystatechange = function () {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
@@ -71,12 +88,12 @@ export class CovidApiService {
     }
   }
 
-  public static  PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  public static PostHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
       new HTTP().post(
         addr,
         parameters,
@@ -102,7 +119,7 @@ export class CovidApiService {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
       for (let prop in headers) {
         xhr.setRequestHeader(prop, headers[prop]);
       }
@@ -111,12 +128,12 @@ export class CovidApiService {
     }
   }
 
-  public static  PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  public static PutHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
       new HTTP().put(
         addr,
         parameters,
@@ -142,7 +159,7 @@ export class CovidApiService {
       if (typeof headers != "object" || headers === null) {
         headers = {};
       }
-      headers['Content-Type'] = 'application/x-www-form-SERVER_ADDRencoded';
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
       for (let prop in headers) {
         xhr.setRequestHeader(prop, headers[prop]);
       }
@@ -171,7 +188,16 @@ export class GunsCovidEvents {
   OnCasesCovidGuns(data){
     console.log(data);
   }
+  OnCasesCovidAllStates(data){
+    console.log(data);
+  }
+  OnCasesCovidBrazil(data){
+    console.log(data);
+  }
   OnCasesCovidPe(data){
+    console.log(data);
+  }
+  OnCasesCovidOfficialSources(data){
     console.log(data);
   }
   OnErrorTriggered(data) {
@@ -236,6 +262,91 @@ export const GunsCovidResponses = {
     ERROR_WHEN_RETURN_USER_LOCATION: 12,
     //LOCALIZAÇÃO DO USER RETORNADA COM SUCESSO
     USER_LOCATION_SUCCESS_RETURNED: 15,
+  }
+
+}
+
+export class HttpPolling {
+
+  private geolocation: Geolocation;
+  private uuidsvc: UuidSvc;
+
+  private pollingHandle: NodeJS.Timer;
+  private isEnabled: Boolean = false;
+
+  private pvoidAgglomeration: any;
+  private pvoidUpdatePos: any;
+  private pvoidCallbackError: any;
+  private pollingCurrentInterval: number;
+
+  constructor(pvoidAgglomeration, pvoidUpdPosition, pvoidErr, pollingInterval, protected storage: Storage, protected gps: Geolocation){
+    this.pvoidAgglomeration = pvoidAgglomeration;
+    this.pvoidUpdatePos = pvoidUpdPosition;
+    this.pvoidCallbackError = pvoidErr;
+    this.pollingCurrentInterval = pollingInterval || 2000;
+    this.uuidsvc = new UuidSvc(this.storage);
+    this.geolocation = gps;
+  }
+
+  public beginPolling(){
+    if (!this.isEnabled){
+      this.isEnabled = true;
+
+      let pvoidPollingStub = (data) => {
+        let covidEvt = new GunsCovidEvents();
+        let evtCount = 0;
+
+        covidEvt.OnCrowdingTodayGaranhuns = (data) => {
+          evtCount++;
+          this.pvoidAgglomeration(data);
+          if ((evtCount == 2)  && this.isEnabled){
+            this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
+          }
+        }
+        covidEvt.OnUpdatePosition = (data) => {
+          evtCount++;
+          this.pvoidUpdatePos(data);
+          if ((evtCount == 2) && this.isEnabled){
+            this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
+          }
+        }
+        covidEvt.OnErrorTriggered = (error) => {
+          evtCount++;
+          this.pvoidCallbackError(error);
+          if ((evtCount == 2)  && this.isEnabled){
+            this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
+          }
+        }
+
+        this.uuidsvc.getUuid((uuid) => {
+          if (uuid == ''){
+            console.error('Invalid uuid value.');
+          }
+          else{
+            CovidApiService.crowdingTodayGaranhuns(covidEvt, uuid);
+            this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
+              let data = { latitude: response.coords.latitude, longitude: response.coords.longitude };
+              if (data.latitude && data.longitude){
+                CovidApiService.updatePosition(covidEvt, uuid, data.latitude, data.longitude, true);
+              }
+              else{
+                CovidApiService.updatePosition(covidEvt, uuid, 0, 0, false);
+              }
+            }).catch((reason) => {
+              CovidApiService.updatePosition(covidEvt, uuid, 0, 0, false);
+            });
+          }
+        }, this.storage);
+      }
+      this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
+    }
+  }
+
+  public stopPolling(){
+    if (this.isEnabled){
+      this.isEnabled = false;
+      clearTimeout(this.pollingHandle);
+    }
   }
 
 }

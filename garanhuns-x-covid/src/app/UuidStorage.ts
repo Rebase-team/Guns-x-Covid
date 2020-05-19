@@ -3,17 +3,17 @@ import { Storage } from '@ionic/storage';
 
 export class UuidSvc {
 
-    static storage: Storage;
+    constructor(private storage: Storage){}
 
-    public static getUuid(pvoidCb) {
+    public getUuid(pvoidCb, storage: Storage) {
         this.storage.get('uuid').then((val) => {
-            pvoidCb(String((typeof val != "undefined" ? val : '')));
+            pvoidCb(String((val ? val : '')));
         }).catch((err) => {
             console.log(err);
         })
     }
 
-    public static setUuid(uuid, pvoidOnCompleted) {
+    public setUuid(uuid, pvoidOnCompleted, storage: Storage) {
         this.storage.set('uuid', uuid).then((val) => {
             pvoidOnCompleted();
         }).catch(err => {
