@@ -54,7 +54,7 @@ export class CovidApiService {
     this.GetHttpRequest(this.SERVER_ADDR + `report/${uuid}/official`, {}, {}, event.OnCasesCovidOfficialSources, event.OnErrorTriggered);
   }
 
-  public static  GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
+  public static GetHttpRequest(addr, parameters, headers, successCallback, errorCallback) {
     if (!__UNSECURE_DEBUG_MODE) {
       new HTTP().get(
         addr,

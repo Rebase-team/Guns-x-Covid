@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
@@ -14,7 +14,8 @@ const geolib = require('geolib');
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage{
+
+export class HomePage implements OnInit{
   vote: string = "";
   average: Object = {
     current: {
@@ -24,7 +25,6 @@ export class HomePage{
     min: "~",
     max: "~"
   };
-  coords: any = {lat: 0, lng: 0};
   disabledAnswer: boolean = false;
   dataNotCollected: boolean = true;
 
@@ -45,35 +45,6 @@ export class HomePage{
       function(err){ console.log('Ocorreu um erro.')}, 
       5000, this.storage, this.geolocation);
     this.httpPolling.beginPolling();
-  }
-
-  private updatePosition() {
-    this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
-      let event = new GunsCovidEvents();
-      event.OnUpdatePosition = (data) => {
-        let dataJSON = JSON.parse(data.data);
-        console.log(dataJSON);
-        switch(dataJSON.response){
-          case GunsCovidResponses.UPDATE_POSITION.USER_LOCATION_SUCCESS_RETURNED:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
-            break;
-          case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
-            break;
-          default:
-        }
-      }
-      event.OnErrorTriggered = (error) => {
-        console.log(error);
-      }
-      this.storage.get("uuid").then((uuid) => {
-        CovidApiService.updatePosition(event, uuid, response.coords.latitude, response.coords.longitude, 1);
-      });
-    });
   }
 
   //Checa permissão do GPS
@@ -163,9 +134,39 @@ export class HomePage{
     });
   }
 
+  //Enviar localização do usuário
+  private updatePosition() {
+    this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
+      let event = new GunsCovidEvents();
+      event.OnUpdatePosition = (data) => {
+        let dataJSON = JSON.parse(data.data);
+        console.log(dataJSON);
+        switch(dataJSON.response){
+          case GunsCovidResponses.UPDATE_POSITION.USER_LOCATION_SUCCESS_RETURNED:
+            break;
+          case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_RETURN_USER_LOCATION:
+            break;
+          case GunsCovidResponses.UPDATE_POSITION.ERROR_WHEN_UPDATE_USER_LOCATION:
+            break;
+          case GunsCovidResponses.UPDATE_POSITION.UUID_FAILED:
+            break;
+          case GunsCovidResponses.UPDATE_POSITION.UUID_INVALID:
+            break;
+          default:
+        }
+      }
+      event.OnErrorTriggered = (error) => {
+        console.log(error);
+      }
+      this.storage.get("uuid").then((uuid) => {
+        CovidApiService.updatePosition(event, uuid, response.coords.latitude, response.coords.longitude, 1);
+      });
+    });
+  }
+
+  //Enviar voto
   submitVote() {
     this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
-      this.coords = { lat: response.coords.latitude, lng: response.coords.longitude };
       let isInCity: boolean = geolib.isPointWithinRadius(
       { latitude: -8.891052, longitude: -36.494519 }, //Coordenadas do centro de Garanhuns
       { latitude: response.coords.latitude, longitude: response.coords.longitude },
