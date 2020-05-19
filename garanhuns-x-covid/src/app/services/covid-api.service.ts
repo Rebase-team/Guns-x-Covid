@@ -353,8 +353,20 @@ export class HttpPolling {
 
 export class GpsAPI {
 
-  public static ReadDevicePosition(pCallback){
-    
+  constructor(protected geolocation: Geolocation){}
+
+  public ReadDevicePosition(pCallback){
+    this.geolocation.getCurrentPosition({ timeout: 3000 }).then((val) => {
+      pCallback({
+        lat: val.coords.latitude,
+        long: val.coords.longitude,
+        accuracy: val.coords.accuracy,
+        error: false
+      });
+    }).catch((reason) => {
+        pCallback({ lat: 0, long: 0, error: true });
+      }
+    );
   }
 
 }
