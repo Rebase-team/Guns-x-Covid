@@ -16,7 +16,7 @@ export class TabsPage implements OnInit{
     this.subscribeBackButton = this.platform.backButton.subscribeWithPriority(Number.MAX_SAFE_INTEGER - 1, () => {
       if (!this.mutex){
         let url = this.platform.url().toUpperCase();
-        if (url.indexOf('HOME') != -1 || url.indexOf('SLIDE') != -1){
+        if (url.indexOf('HOME') != -1){
           this.alert.create({
             header: "Confirmação de saída do App",
             message: "Deseja sair do App?",

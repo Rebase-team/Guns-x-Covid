@@ -5,15 +5,15 @@ import { Storage } from "@ionic/storage";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { HomePage } from '../home/home.page';
 
-const __UNSECURE_DEBUG_MODE = false;
+const __UNSECURE_DEBUG_MODE = true;
 
 @Injectable({
   providedIn: 'root'
 })
 export class CovidApiService {
 
-  public static SERVER_ADDR = "https://api-covid.fun/covid/";
-  //public static SERVER_ADDR = "http://192.168.0.107:14400/covid/"
+  //public static SERVER_ADDR = "https://api-covid.fun/covid/";
+  public static SERVER_ADDR = "http://192.168.0.107:14400/covid/"
 
   public static registerUser(event: GunsCovidEvents, uuid) {
     this.PutHttpRequest(this.SERVER_ADDR + `uuid/${uuid}`, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);

@@ -15,12 +15,14 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { HTTP } from "@ionic-native/http/ngx";
 import { HttpClientModule } from "@angular/common/http";
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, HttpClientModule,IonicModule.forRoot(), IonicStorageModule.forRoot(), AppRoutingModule],
   providers: [
+    InAppBrowser,
     StatusBar,
     HTTP,
     AndroidPermissions,
