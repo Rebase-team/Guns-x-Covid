@@ -40,6 +40,13 @@ export class HomePage implements OnInit {
     this.httpPolling = new HttpPolling(this.OnAgglomerationData, this.OnUpdatedPosition, (err) => { }, 12000, this.storage, this.geolocation, this);
     this.checkGPSPermission();
     this.httpPolling.beginPolling();
+    let event = new GunsCovidEvents();
+    event.OnCrowdingTodayGaranhuns = (data) => {
+      this.OnAgglomerationData(data, this);
+    }
+    this.uuidsvc.getUuid((uuid)=> {
+      CovidApiService.crowdingTodayGaranhuns(event, uuid);
+    }, this.storage);
   }
 
   OnAgglomerationData(data, referrer) {

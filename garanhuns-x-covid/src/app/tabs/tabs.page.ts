@@ -31,8 +31,10 @@ export class TabsPage implements OnInit{
             ]
           }).then((alertExit) => { alertExit.present(); });
         }
+        else{
+          this.navCtrl.back();
+        }
         this.mutex = true;
-        this.navCtrl.back();
         setTimeout(()=>{this.mutex = false;}, 100);
       }
     });
