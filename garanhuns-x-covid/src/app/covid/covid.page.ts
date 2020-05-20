@@ -9,10 +9,10 @@ import { Storage } from "@ionic/storage";
 })
 export class CovidPage {
   dataGus = {
-    confirm: "0",
+    cases: "0",
     recovered: "0",
-    suspect: "0",
-    death: "0",
+    suspects: "0",
+    deaths: "0",
   }
 
   dataPe = {
@@ -34,7 +34,9 @@ export class CovidPage {
     let event = new GunsCovidEvents();
     event.OnCasesCovidGuns = (data) => {
       let dataJSON = JSON.parse(data.data);
-      console.log(dataJSON);
+      if (dataJSON.response != GunsCovidResponses.CASES_TODAY_GARANHUNS.UUID_INVALID){
+        this.dataGus = dataJSON.parameters;
+      }
     }
     event.OnErrorTriggered = (error) => {
       console.log(error);

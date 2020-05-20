@@ -3,6 +3,7 @@ import { HTTP } from "@ionic-native/http/ngx"
 import { UuidSvc } from '../UuidStorage';
 import { Storage } from "@ionic/storage";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { HomePage } from '../home/home.page';
 
 const __UNSECURE_DEBUG_MODE = true;
 
@@ -11,8 +12,8 @@ const __UNSECURE_DEBUG_MODE = true;
 })
 export class CovidApiService {
 
-  public static SERVER_ADDR = "https://api-covid.fun/covid/";
-  //public static SERVER_ADDR = "http://192.168.0.107:14400/covid/"
+  //public static SERVER_ADDR = "https://api-covid.fun/covid/";
+  public static SERVER_ADDR = "http://192.168.0.107:14400/covid/"
 
   public static registerUser(event: GunsCovidEvents, uuid) {
     this.PutHttpRequest(this.SERVER_ADDR + `uuid/${uuid}`, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
@@ -260,8 +261,10 @@ export const GunsCovidResponses = {
     ERROR_WHEN_UPDATE_USER_LOCATION: 11,
     //ERRO EM RETORNAR A LOCALIZAÇÃOL
     ERROR_WHEN_RETURN_USER_LOCATION: 12,
-    //LOCALIZAÇÃO DO USER RETORNADA COM SUCESSO
-    USER_LOCATION_SUCCESS_RETURNED: 15,
+    //PARAMETRO IS_TRACKING INVALIDO
+    IS_TRACKING_PARAMS_INVALID:               13,
+    //DISPOSITIVO SENDO RASTREADO COM SUCESSO
+    SUCCESSFULLY_TRACKED: 14,
   }
 
 }
@@ -278,14 +281,16 @@ export class HttpPolling {
   private pvoidUpdatePos: any;
   private pvoidCallbackError: any;
   private pollingCurrentInterval: number;
+  private originThis: HomePage;
 
-  constructor(pvoidAgglomeration, pvoidUpdPosition, pvoidErr, pollingInterval, protected storage: Storage, protected gps: Geolocation){
+  constructor(pvoidAgglomeration, pvoidUpdPosition, pvoidErr, pollingInterval, protected storage: Storage, protected gps: Geolocation, origin: HomePage){
     this.pvoidAgglomeration = pvoidAgglomeration;
     this.pvoidUpdatePos = pvoidUpdPosition;
     this.pvoidCallbackError = pvoidErr;
     this.pollingCurrentInterval = pollingInterval || 2000;
     this.uuidsvc = new UuidSvc(this.storage);
     this.geolocation = gps;
+    this.originThis = origin;
   }
 
   public beginPolling(){
@@ -298,21 +303,21 @@ export class HttpPolling {
 
         covidEvt.OnCrowdingTodayGaranhuns = (data) => {
           evtCount++;
-          this.pvoidAgglomeration(data);
+          this.pvoidAgglomeration(data, this.originThis);
           if ((evtCount == 2)  && this.isEnabled){
             this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
           }
         }
         covidEvt.OnUpdatePosition = (data) => {
           evtCount++;
-          this.pvoidUpdatePos(data);
+          this.pvoidUpdatePos(data, this.originThis);
           if ((evtCount == 2) && this.isEnabled){
             this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
           }
         }
         covidEvt.OnErrorTriggered = (error) => {
           evtCount++;
-          this.pvoidCallbackError(error);
+          this.pvoidCallbackError(error, this.originThis);
           if ((evtCount == 2)  && this.isEnabled){
             this.pollingHandle = setTimeout(pvoidPollingStub, this.pollingCurrentInterval);
           }
@@ -327,13 +332,13 @@ export class HttpPolling {
             this.geolocation.getCurrentPosition({ timeout: 3000 }).then((response) => {
               let data = { latitude: response.coords.latitude, longitude: response.coords.longitude };
               if (data.latitude && data.longitude){
-                CovidApiService.updatePosition(covidEvt, uuid, data.latitude, data.longitude, true);
+                CovidApiService.updatePosition(covidEvt, uuid, data.latitude, data.longitude, 1);
               }
               else{
-                CovidApiService.updatePosition(covidEvt, uuid, 0, 0, false);
+                CovidApiService.updatePosition(covidEvt, uuid, 0, 0, 0);
               }
             }).catch((reason) => {
-              CovidApiService.updatePosition(covidEvt, uuid, 0, 0, false);
+              CovidApiService.updatePosition(covidEvt, uuid, 0, 0, 0);
             });
           }
         }, this.storage);
