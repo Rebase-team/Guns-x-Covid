@@ -22,8 +22,7 @@ export class CovidPage {
     death: "0",
   }
 
-  constructor(private covidApi: CovidApiService,
-    private storage: Storage) { }
+  constructor(private storage: Storage) { }
 
   ionViewWillEnter() {
     this.casesCovidGuns();

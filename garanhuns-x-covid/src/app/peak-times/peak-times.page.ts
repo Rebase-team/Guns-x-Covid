@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CovidApiService, GunsCovidEvents, GunsCovidResponses } from '../services/covid-api.service';
 import { Storage } from "@ionic/storage";
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-peak-times',
@@ -46,8 +47,8 @@ export class PeakTimes {
     }
   ];
   
-  constructor(private covidApi: CovidApiService,
-              private storage: Storage) { }
+  constructor(private storage: Storage,
+    private alert: AlertService) { }
 
   ionViewWillEnter() {
     this.btnAverageDay();
@@ -109,17 +110,16 @@ export class PeakTimes {
           }
           break;
         case GunsCovidResponses.AVERAGE_DAY.UUID_FAILED:
-          ////
+          this.alert.activeAlert("Tente escolher o dia novamente", "Falha no UUID.");
           break;
         case GunsCovidResponses.AVERAGE_DAY.UUID_INVALID:
-          ////
+          this.alert.activeAlert("Tente escolher o dia novamente", "UUID inválido.");
           break;
         default:
-          ////
+          this.alert.activeAlert("Tente escolher o dia novamente", "Problema inesperado.");
       }
     }
     event.OnErrorTriggered = (error) => {
-      ////
       console.log(error);
     }
     this.storage.get("uuid").then((uuid) => {
