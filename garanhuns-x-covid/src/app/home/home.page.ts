@@ -152,15 +152,19 @@ export class HomePage implements OnInit {
               this.alert.activeAlert("Você já respondeu", "Daqui uma hora a partir da última vez que você respondeu você pode responder novamente.");
               break;
             case GunsCovidResponses.SUBMIT_VOTE.UUID_FAILED:
+              this.alert.activeAlert("Tente responder novamente", "Falha no UUID.");
               this.disabledAnswer = false;
               break;
             case GunsCovidResponses.SUBMIT_VOTE.UUID_INVALID:
+              this.alert.activeAlert("Tente responder novamente", "UUID inválido.");
               this.disabledAnswer = false;
               break;
             case GunsCovidResponses.SUBMIT_VOTE.VOTE_INVALID:
+              this.alert.activeAlert("Tente responder novamente", "Voto inválido.");
               this.disabledAnswer = false;
               break;
             default:
+              this.alert.activeAlert("Tente responder novamente", "Problema inesperado.");
               this.disabledAnswer = false;
           }
         }
