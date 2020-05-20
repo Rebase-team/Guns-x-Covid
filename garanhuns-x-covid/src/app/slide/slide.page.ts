@@ -15,9 +15,7 @@ export class SlidePage{
 	spinner: boolean = false;
 	uuid: string = "";
 
-	constructor(private navigation: NavController,
-		private storage: Storage,
-		private alert: AlertService) { }
+	constructor(private navigation: NavController,private storage: Storage,private alert: AlertService) { }
 
 	async btnGoHome() {
 		if (this.terms == true) {
@@ -31,6 +29,7 @@ export class SlidePage{
 		this.spinner = true;
 		this.uuid = uuidv4();
 		let event = new GunsCovidEvents();
+
 		event.OnRegisterSuccess = (data) => {
 			let dataJSON = JSON.parse(data.data);
 			this.spinner = false;
@@ -56,10 +55,16 @@ export class SlidePage{
 					this.alert.activeAlert("Tente acessar novamente", "Problema inesperado.");
 			}
 		}
+		
 		event.OnErrorTriggered = (error) => {
 			this.spinner = false;
-			console.log(error);
 		}
-		CovidApiService.registerUser(event, this.uuid);
+		this.storage.get('firstAccess').then(val => {
+			if (!val){
+				CovidApiService.registerUser(event, this.uuid);
+				console.log(this.uuid);
+			}
+		})
+		
 	}
 }
