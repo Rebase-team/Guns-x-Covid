@@ -9,7 +9,7 @@
     </div>
     <div class="margin top">
       <ion-progress-bar *ngIf="statusRequest" color="primary" type="indeterminate"></ion-progress-bar>
-      <ion-segment [(ngModel)]="vote" [disabled]="disabledAnswer" (ionChange)="submitVote()" mode="ios">
+      <ion-segment [(ngModel)]="vote" [disabled]="statusRequest" (ionChange)="submitVote()" mode="ios">
         <ion-segment-button class="red" value=4>
           <ion-label class="white"><strong>Muita alta</strong></ion-label>
         </ion-segment-button>

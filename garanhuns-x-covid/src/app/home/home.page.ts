@@ -30,8 +30,6 @@ export class HomePage implements OnInit {
   gps: GpsAPI;
   uuidsvc: UuidSvc;
   httpPolling: HttpPolling;
-
-  disabledAnswer: boolean = false;
   
   constructor(private alert: AlertService, private androidPermissions: AndroidPermissions, private locationAccuracy: LocationAccuracy, private geolocation: Geolocation, private storage: Storage) { }
 
@@ -143,14 +141,12 @@ export class HomePage implements OnInit {
   //Enviar voto
   submitVote() {
     this.statusRequest = true;
-    this.disabledAnswer = true;
     this.gps.ReadDevicePosition((pos) => {
       let isInCity: boolean = geolib.isPointWithinRadius({ latitude: -8.891052, longitude: -36.494519 }, { latitude: pos.lat, longitude: pos.long }, 5000);
       if (isInCity) {
         let event = new GunsCovidEvents();
         event.OnSubmiteVote = (data) => {
           this.statusRequest = false;
-          this.disabledAnswer = false;
           let dataJSON = JSON.parse(data.data);
           switch (dataJSON.response) {
             case GunsCovidResponses.SUBMIT_VOTE.VOTE_SUBMITED:
@@ -177,7 +173,6 @@ export class HomePage implements OnInit {
         }
         event.OnErrorTriggered = (error) => {
           this.statusRequest = false;
-          this.disabledAnswer = false;
           console.log(error);
         }
         this.storage.get("uuid").then((uuid) => {
@@ -185,7 +180,6 @@ export class HomePage implements OnInit {
         });
       }
       else {
-        this.disabledAnswer = false;
         this.statusRequest = false;
         this.alert.activeAlert("Longe do centro", "Você precisa está em um raio de 5 km para poder responder.");
       }
