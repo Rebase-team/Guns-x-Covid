@@ -17,6 +17,7 @@ const geolib = require('geolib');
 
 export class HomePage implements OnInit {
   vote: string = "";
+  statusRequest: boolean = false;
   average: any = {
     current: {
       msg: "~",
@@ -141,12 +142,15 @@ export class HomePage implements OnInit {
 
   //Enviar voto
   submitVote() {
+    this.statusRequest = true;
+    this.disabledAnswer = true;
     this.gps.ReadDevicePosition((pos) => {
       let isInCity: boolean = geolib.isPointWithinRadius({ latitude: -8.891052, longitude: -36.494519 }, { latitude: pos.lat, longitude: pos.long }, 5000);
       if (isInCity) {
-        this.disabledAnswer = true;
         let event = new GunsCovidEvents();
         event.OnSubmiteVote = (data) => {
+          this.statusRequest = false;
+          this.disabledAnswer = false;
           let dataJSON = JSON.parse(data.data);
           switch (dataJSON.response) {
             case GunsCovidResponses.SUBMIT_VOTE.VOTE_SUBMITED:
@@ -160,22 +164,19 @@ export class HomePage implements OnInit {
               break;
             case GunsCovidResponses.SUBMIT_VOTE.UUID_FAILED:
               this.alert.activeAlert("Tente responder novamente", "Falha no UUID.");
-              this.disabledAnswer = false;
               break;
             case GunsCovidResponses.SUBMIT_VOTE.UUID_INVALID:
               this.alert.activeAlert("Tente responder novamente", "UUID inválido.");
-              this.disabledAnswer = false;
               break;
             case GunsCovidResponses.SUBMIT_VOTE.VOTE_INVALID:
               this.alert.activeAlert("Tente responder novamente", "Voto inválido.");
-              this.disabledAnswer = false;
               break;
             default:
               this.alert.activeAlert("Tente responder novamente", "Problema inesperado.");
-              this.disabledAnswer = false;
           }
         }
         event.OnErrorTriggered = (error) => {
+          this.statusRequest = false;
           this.disabledAnswer = false;
           console.log(error);
         }
@@ -184,6 +185,8 @@ export class HomePage implements OnInit {
         });
       }
       else {
+        this.disabledAnswer = false;
+        this.statusRequest = false;
         this.alert.activeAlert("Longe do centro", "Você precisa está em um raio de 5 km para poder responder.");
       }
     });
