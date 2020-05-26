@@ -5,7 +5,7 @@ import { Storage } from "@ionic/storage";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { HomePage } from '../home/home.page';
 
-const __UNSECURE_DEBUG_MODE = true;
+const __UNSECURE_DEBUG_MODE = false;
 
 @Injectable({
   providedIn: 'root'
