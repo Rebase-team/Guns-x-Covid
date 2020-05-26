@@ -89,7 +89,9 @@
             <ion-col class="left">
               <ion-label class="white">
                 <ion-icon class="marginIcon textRed2" name="close-circle"></ion-icon>
-                <strong>Descartados:</strong>
+                <strong>Descartados</strong>
+                <ion-icon color="light" slot="start" name="information-circle-outline" style="font-size: 12px; margin-left: 2px; margin-bottom: 2px;"></ion-icon>
+                <strong>:</strong>
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft2 top2" size="6">
@@ -100,7 +102,9 @@
             <ion-col class="left">
               <ion-label class="white">
                 <ion-icon class="marginIcon" color="warning" name="warning"></ion-icon>
-                <strong>Suspeitos:</strong>
+                <strong>Suspeitos</strong>
+                <ion-icon color="light" slot="start" name="information-circle-outline" style="font-size: 12px; margin-left: 2px; margin-bottom: 2px;"></ion-icon>
+                <strong>:</strong>
               </ion-label>
             </ion-col>
             <ion-col class="right borderLeft2 top2" size="6">
@@ -123,7 +127,11 @@
       <div class="borderInfos top bottom">
         <ion-item class="textBlue" color="none" lines="none" (click)="openSources()">
           <ion-icon color="primary" slot="start" name="globe"></ion-icon>
-          <ion-label class="marginText">Fonte: Covid Pernambuco</ion-label>
+          <p class="marginText">Fonte: Covid Pernambuco</p> 
+        </ion-item>
+        <ion-item class="textBlue" color="none" lines="none" (click)="openSources()">
+          <ion-icon color="primary" slot="start" name="information-circle-outline"></ion-icon>
+          <p class="marginText">Referente ao dia.</p> 
         </ion-item>
       </div>     
     </div>
