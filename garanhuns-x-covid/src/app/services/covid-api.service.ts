@@ -13,7 +13,7 @@ const __UNSECURE_DEBUG_MODE = true;
 export class CovidApiService {
 
   public static SERVER_ADDR = "https://api-covid.fun/covid/";
-  //public static SERVER_ADDR = "http://192.168.0.107:14400/covid/"
+  //public static SERVER_ADDR = "http://192.168.0.107:14400/covid/";
 
   public static registerUser(event: GunsCovidEvents, uuid) {
     this.PutHttpRequest(this.SERVER_ADDR + `uuid/${uuid}`, {}, {}, event.OnRegisterSuccess, event.OnErrorTriggered);
