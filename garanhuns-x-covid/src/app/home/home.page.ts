@@ -17,6 +17,7 @@ const geolib = require('geolib');
 
 export class HomePage implements OnInit {
   vote: string = "";
+  statusRequest: boolean = false;
   average: any = {
     current: {
       msg: "~",
@@ -29,8 +30,6 @@ export class HomePage implements OnInit {
   gps: GpsAPI;
   uuidsvc: UuidSvc;
   httpPolling: HttpPolling;
-
-  disabledAnswer: boolean = false;
   
   constructor(private alert: AlertService, private androidPermissions: AndroidPermissions, private locationAccuracy: LocationAccuracy, private geolocation: Geolocation, private storage: Storage) { }
 
@@ -141,12 +140,13 @@ export class HomePage implements OnInit {
 
   //Enviar voto
   submitVote() {
+    this.statusRequest = true;
     this.gps.ReadDevicePosition((pos) => {
       let isInCity: boolean = geolib.isPointWithinRadius({ latitude: -8.891052, longitude: -36.494519 }, { latitude: pos.lat, longitude: pos.long }, 5000);
       if (isInCity) {
-        this.disabledAnswer = true;
         let event = new GunsCovidEvents();
         event.OnSubmiteVote = (data) => {
+          this.statusRequest = false;
           let dataJSON = JSON.parse(data.data);
           switch (dataJSON.response) {
             case GunsCovidResponses.SUBMIT_VOTE.VOTE_SUBMITED:
@@ -160,23 +160,19 @@ export class HomePage implements OnInit {
               break;
             case GunsCovidResponses.SUBMIT_VOTE.UUID_FAILED:
               this.alert.activeAlert("Tente responder novamente", "Falha no UUID.");
-              this.disabledAnswer = false;
               break;
             case GunsCovidResponses.SUBMIT_VOTE.UUID_INVALID:
               this.alert.activeAlert("Tente responder novamente", "UUID inválido.");
-              this.disabledAnswer = false;
               break;
             case GunsCovidResponses.SUBMIT_VOTE.VOTE_INVALID:
               this.alert.activeAlert("Tente responder novamente", "Voto inválido.");
-              this.disabledAnswer = false;
               break;
             default:
               this.alert.activeAlert("Tente responder novamente", "Problema inesperado.");
-              this.disabledAnswer = false;
           }
         }
         event.OnErrorTriggered = (error) => {
-          this.disabledAnswer = false;
+          this.statusRequest = false;
           console.log(error);
         }
         this.storage.get("uuid").then((uuid) => {
@@ -184,6 +180,7 @@ export class HomePage implements OnInit {
         });
       }
       else {
+        this.statusRequest = false;
         this.alert.activeAlert("Longe do centro", "Você precisa está em um raio de 5 km para poder responder.");
       }
     });

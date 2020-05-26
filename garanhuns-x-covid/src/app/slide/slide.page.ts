@@ -29,7 +29,6 @@ export class SlidePage{
 		this.spinner = true;
 		this.uuid = uuidv4();
 		let event = new GunsCovidEvents();
-
 		event.OnRegisterSuccess = (data) => {
 			let dataJSON = JSON.parse(data.data);
 			this.spinner = false;
@@ -62,7 +61,6 @@ export class SlidePage{
 		this.storage.get('firstAccess').then(val => {
 			if (!val){
 				CovidApiService.registerUser(event, this.uuid);
-				console.log(this.uuid);
 			}
 		})
 		

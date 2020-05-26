@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.20",
-    "@angular/cli": "~8.3.23",
+    "@angular/cli": "8.3.26",
     "@angular/compiler": "~8.2.14",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
@@ -81,7 +81,9 @@
     "plugins": {
       "cordova-sqlite-storage": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-advanced-http": {},
+      "cordova-plugin-advanced-http": {
+        "OKHTTP_VERSION": "3.10.0"
+      },
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-splashscreen": {},
