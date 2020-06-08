@@ -37,7 +37,7 @@ Alunos:
 - José Edgleyson
 - José Thiago
 - Kelvin Vasconcelos
-- Luís Gustavo
+- Luíz Gustavo
 - Muryllo Pimenta
 - Sávio Santos
 
