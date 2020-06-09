@@ -57,7 +57,7 @@ export class HomePage implements OnInit {
         value = Math.round(value);
       }
       return{
-        0: "S/ dados",
+        0: "Sem dados",
         1: "Baixa",
         1.5: "Baixa ~ Normal", 
         2: "Normal",
