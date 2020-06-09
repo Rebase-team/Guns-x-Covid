@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 	styleUrls: ['./slide.page.scss'],
 })
 export class SlidePage{
-	terms: boolean = true;
+	terms: boolean = false;
 	spinner: boolean = false;
 	uuid: string = "";
 

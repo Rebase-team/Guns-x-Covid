@@ -25,10 +25,10 @@ export class AppComponent {
         if (value == null || value == undefined) {
           this.navigation.navigateRoot("slide");
         }
+        this.statusBar.styleDefault();
+        this.statusBar.backgroundColorByHexString('#f4f5f8');
+        this.splashScreen.hide();
       });
-      this.statusBar.styleDefault();
-      this.statusBar.backgroundColorByHexString('#f4f5f8');
-      this.splashScreen.hide();
     });
   }
 }
