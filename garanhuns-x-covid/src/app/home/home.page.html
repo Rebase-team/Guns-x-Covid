@@ -10,16 +10,16 @@
     <div class="margin top">
       <ion-progress-bar *ngIf="statusRequest" color="primary" type="indeterminate"></ion-progress-bar>
       <ion-segment [(ngModel)]="vote" [disabled]="statusRequest" (ionChange)="submitVote()" mode="ios">
-        <ion-segment-button class="red" value=4>
+        <ion-segment-button class="red redPress" value=4>
           <ion-label class="white"><strong>Muita alta</strong></ion-label>
         </ion-segment-button>
-        <ion-segment-button class="yellow" value=3>
+        <ion-segment-button class="yellow yellowPress" value=3>
           <ion-label class="white"><strong>Alta</strong></ion-label>
         </ion-segment-button>
-        <ion-segment-button class="blue" value=2>
+        <ion-segment-button class="blue bluePress" value=2>
           <ion-label class="white"><strong>Normal</strong></ion-label>
         </ion-segment-button>
-        <ion-segment-button class="green" value=1>
+        <ion-segment-button class="green greenPress" value=1>
           <ion-label class="white"><strong>Baixa</strong></ion-label>
         </ion-segment-button>
       </ion-segment>
