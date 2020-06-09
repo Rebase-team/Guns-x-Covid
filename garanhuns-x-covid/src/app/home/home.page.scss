@@ -27,3 +27,27 @@
 .top2{
 	margin-top: 1vh;
 }
+.redPress{
+    --indicator-color: rgb(194, 72, 72);
+    --background-checked: rgb(194, 72, 72);
+    --background-focused: rgb(194, 72, 72);
+    --background-hover: rgb(194, 72, 72);
+}
+.yellowPress{
+    --indicator-color: rgb(207, 173, 21);
+    --background-checked: rgb(207, 173, 21);
+    --background-focused: rgb(207, 173, 21);
+    --background-hover: rgb(207, 173, 21);
+}
+.bluePress{
+    --indicator-color: rgb(75, 157, 224);
+    --background-checked: rgb(75, 157, 224);
+    --background-focused: rgb(75, 157, 224);
+    --background-hover: rgb(75, 157, 224);
+}
+.greenPress{
+    --indicator-color: rgb(83, 196, 88);
+    --background-checked: rgb(83, 196, 88);
+    --background-focused: rgb(83, 196, 88);
+    --background-hover: rgb(83, 196, 88);
+}
