@@ -120,12 +120,12 @@ export class HomePage implements OnInit {
         if (result.hasPermission) {
           this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then().catch(reason => {
             this.alert.activeAlert('Falha ao obter localização', 'Você precisa ativar a localização e permitir que possamos utilizá-la.').then(() => { });
-          })
+          });
         } else {
           this.requestGPSPermission();
         }
       }).catch((error) => {
-        this.alert.activeAlert("Problema com o cordova", "Erro ao acessar plugin.");
+        console.log(error);
       });
   }
 
@@ -178,6 +178,11 @@ export class HomePage implements OnInit {
         this.storage.get("uuid").then((uuid) => {
           CovidApiService.submitVote(event, uuid, this.vote);
         });
+      }
+      else if (pos == { lat: 0, long: 0, error: true } || isInCity == null || isInCity == undefined) {
+        this.statusRequest = false;
+        this.checkGPSPermission();
+        this.alert.activeAlert("Tente votar novamente", "Verifique sua conexão com à internet.");
       }
       else {
         this.statusRequest = false;
